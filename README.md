@@ -17,17 +17,17 @@ docs/                changelog, manifest, visual language
 Head, once per site:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.0/eureka.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.4/eureka.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.0/eureka.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.4/eureka.js"></script>
 ```
 
 Code Embed, per chart — two lines:
 
 ```html
 <div data-eureka="nighthawk"></div>
-<script src="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.0/infographics/nighthawk-trade-secrets.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.4/infographics/nighthawk-trade-secrets.js"></script>
 ```
 
 Set the height on the **parent section** in the Designer; the chart fills it.

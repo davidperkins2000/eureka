@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   eureka.css — v0.3.0 · 4 August 2026
-   Tier 1 shared chrome. Companion to eureka.js v0.3.0 — keep versions in step.
+   eureka.css — v0.3.4 · 4 August 2026
+   Tier 1 shared chrome. Companion to eureka.js v0.3.4 — keep versions in step.
 
    Bluescale throughout. Top bar, bottom bar and status strip share one
    treatment; the canvas between them is Graph/Ocean, so the bars read a
@@ -60,6 +60,17 @@
   --eureka-hover: 100ms;
 }
 
+/* ── Mount ────────────────────────────────────────────────────────────────
+   A chart is mounted onto `<div data-eureka="{slug}">`, which the module then
+   turns into the .eureka root itself — no wrapper is inserted, because an
+   intermediate auto-height div collapses `height:100%` to the min-height.
+
+   Webflow wraps a Code Embed in its own div, which is height:auto by default.
+   `.w-embed` carries no height, so give the chain a definite one where the
+   parent has provided it. Harmless where the parent is auto — the chart falls
+   back to min-height as before. */
+.w-embed:has(> [data-eureka]) { height: 100%; }
+
 /* ── Shell ────────────────────────────────────────────────────────────────
    margin + box-sizing only. A blanket `padding: 0` is one selector-order
    change away from silently flattening the tooltip. */
@@ -102,7 +113,10 @@
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--eureka-bar-line);
 }
-.eureka-bar:last-of-type {
+/* Any bar AFTER the canvas is a bottom bar. Do not use :last-of-type here —
+   it matches on element type, not class, and every child of .eureka is a div,
+   so it resolved to .eureka-sr and the rule never applied. */
+.eureka-canvas ~ .eureka-bar {
   border-bottom: none;
   border-top: 1px solid var(--eureka-bar-line);
 }
@@ -124,7 +138,8 @@
 
 /* ── Label base ── */
 .eureka-eyebrow, .eureka-control, .eureka-leg, .eureka-stat,
-.eureka-credit, .eureka-tip-head, .eureka-tip-key, .eureka-tip-meta {
+.eureka-credit, .eureka-scale-label, .eureka-tip-head, .eureka-tip-key,
+.eureka-tip-meta {
   font-size: var(--eureka-l2);
   line-height: var(--eureka-lh2);
   letter-spacing: var(--eureka-track);
@@ -148,7 +163,10 @@
   animation: eureka-pulse var(--eureka-dot) ease-in-out infinite;
 }
 @keyframes eureka-pulse { 0%,100% { opacity: 1 } 50% { opacity: .28 } }
-.eureka[data-cycling="false"] .eureka-dot { animation: none; opacity: .28; }
+/* The dot runs continuously. It was previously stopped whenever the cycle
+   paused, so hovering froze it — but the dot is a liveness indicator for the
+   chart, not a play/pause readout for the tooltip. `data-cycling` remains on
+   the root as a state hook; nothing keys off it visually. */
 
 /* ── Controls ── */
 .eureka-controls { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; }
@@ -174,7 +192,13 @@
 }
 
 /* ── Select — same treatment as a control button ── */
-.eureka-select {
+/* Scoped under .eureka so it outweighs the host site's own form styling —
+   a bare `.eureka-select` loses to anything more specific in the Webflow
+   stylesheet, which is why the control was rendering as a native dropdown.
+   `color-scheme: dark` is what makes the native option list render dark;
+   option elements cannot otherwise be styled reliably. */
+.eureka .eureka-select {
+  color-scheme: dark;
   font-family: var(--eureka-mono);
   font-size: var(--eureka-l2);
   line-height: 1;
@@ -182,6 +206,8 @@
   text-transform: uppercase;
   font-weight: var(--eureka-weight);
   padding: 5px 26px 5px 11px;
+  height: auto;
+  min-height: 0;
   border-radius: 2px;
   cursor: pointer;
   background: transparent;
@@ -195,10 +221,10 @@
   background-repeat: no-repeat;
   transition: border-color var(--eureka-hover), color var(--eureka-hover);
 }
-.eureka-select:hover { border-color: var(--eureka-choro-hi); color: var(--eureka-choro-hi); }
-.eureka-select:focus-visible { outline: 1px solid var(--eureka-choro-hi); outline-offset: 2px; }
+.eureka .eureka-select:hover { border-color: var(--eureka-choro-hi); color: var(--eureka-choro-hi); }
+.eureka .eureka-select:focus-visible { outline: 1px solid var(--eureka-choro-hi); outline-offset: 2px; }
 /* Native option lists cannot be styled reliably; give them a legible dark fill. */
-.eureka-select option { background: #08111F; color: #f6f3ec; text-transform: none; }
+.eureka .eureka-select option { background: #08111F; color: #f6f3ec; text-transform: none; }
 
 /* ── Legend (discrete key) ── */
 .eureka-legend { display: flex; gap: 18px; align-items: center; margin-left: auto; flex-wrap: wrap; }
@@ -207,12 +233,25 @@
 .eureka-swatch--ring { border: 1.5px solid #2E6E96; background: #0B1E30; }
 .eureka-swatch--dash { width: 18px; height: 0; border-radius: 0; border-top: 1.5px dashed #0083B5; }
 
-/* ── Scale (continuous ramp) ── */
-/* Label above the ramp; the ramp takes the label's width. No tick numbers —
-   the scale is a legend, not an axis, and the tooltip already gives figures. */
-.eureka-scale { width: max-content; }
-.eureka-scale-label { color: var(--eureka-ink); }
+/* ── Scale (continuous ramp) ──
+   Label above the ramp; the ramp takes the label's width. No tick numbers —
+   the scale is a legend, not an axis, and the tooltip already gives figures.
+
+   `display` is declared explicitly on all three. These were authored as
+   <span>, and an inline box ignores width, height and vertical margin
+   entirely — so the ramp had no size at all and never painted. `max-content`
+   on the container sizes it to the label text; the ramp then fills that. */
+.eureka-scale {
+  display: inline-block;
+  width: max-content;
+  vertical-align: middle;
+}
+.eureka-scale-label {
+  display: block;
+  color: var(--eureka-ink);
+}
 .eureka-scale-ramp {
+  display: block;
   width: 100%; height: 5px; border-radius: 3px; margin-top: 6px;
   background: linear-gradient(90deg, var(--eureka-choro-lo), var(--eureka-choro-hi));
 }
@@ -247,6 +286,9 @@
 }
 .eureka-tip[data-show="true"]     { opacity: 1; }
 .eureka-tip[data-show="false"]    { pointer-events: none; }
+/* Not draggable → never intercepts. Set by the `network` preset, where the
+   marks themselves are what the pointer needs to reach. */
+.eureka[data-draggable="false"] .eureka-tip { pointer-events: none; cursor: default; }
 .eureka-tip[data-stepping="true"] { transition: opacity var(--eureka-step) linear; }
 .eureka-tip[data-dragging="true"] { cursor: grabbing; transition: none; }
 

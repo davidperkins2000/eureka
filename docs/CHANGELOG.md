@@ -1,5 +1,110 @@
 # Changelog
 
+## v0.3.4 — 4 August 2026
+
+Supersedes the v0.3.2 and v0.3.3 packages, which were produced but never
+tagged. Numbers are not reused, so those two are spent.
+
+### Engine and chrome
+
+**Bottom bar had no divider.** The rule was `.eureka-bar:last-of-type`, but
+`:last-of-type` matches on element *type*, not class — every child of
+`.eureka` is a div, so it resolved to `.eureka-sr` and never applied. Now
+`.eureka-canvas ~ .eureka-bar`: any bar after the canvas is a bottom bar.
+
+**The dot stopped on hover.** `.eureka[data-cycling="false"] .eureka-dot` set
+`animation: none`, so pausing the cycle froze it. That followed from treating
+the dot as a playback indicator; it is a liveness indicator for the chart, and
+runs continuously. `data-cycling` remains on the root as a state hook with no
+visual binding.
+
+**Tooltip blocked node dragging.** A draggable tooltip must accept pointer
+events, so it swallows any drag beginning underneath it — fine where marks are
+static, wrong on a force graph. `draggable` is now per-preset; `network` sets
+it false, and the engine publishes `data-draggable` for CSS to match.
+
+**Select rendered as a native control.** `.eureka-select` lost to more specific
+form rules in the host stylesheet. Scoped to `.eureka .eureka-select`, with
+`color-scheme: dark` — the only reliable way to darken a native option list.
+
+### Project Nighthawk
+
+- Eyebrow reads `PROJECT NIGHTHAWK · TRADE SECRETS NETWORK`; the SVG
+  accessible name matches.
+- `REGISTER` mode relabelled **`TRADE SECRETS`** — button, status readout and
+  header comment. Internal `data-m="register"` unchanged.
+- Application filter moved to the end of the controls and relabelled
+  `APPLICATION`.
+- **Drift restored.** `clampAll()` zeroed velocity on wall contact, which was
+  survivable at 13 nodes and fatal at 36 — far more nodes rest against an edge
+  at any moment, so drift was cancelled faster than it accumulated. Nodes now
+  reflect at `CFG.bounce` (0.35). `driftAmp` .070 → .095.
+- **Core secrets render identically to every other secret.** `core` stays in
+  the data but must not change how a node looks: a register is a register, not
+  a ranking. Legend entry removed.
+
+### WIPO GII
+
+- **The scale legend was unstyled and had no ramp.** Two causes. The three
+  parts were authored as `<span>`, and an inline box ignores width, height and
+  vertical margin — so the ramp had no size at all and never painted. And
+  `.eureka-scale-label` was missing from the label base selector, so it
+  rendered as default body text rather than Label 2. Markup returned to
+  `<div>` (as v11 had it) and `display` is now declared explicitly on all
+  three, so the rule holds whichever element is used.
+- **The map painted its own ocean.** A `<rect>` filled with `Graph/Ocean`
+  covered the canvas before anything else drew, so transparent CSS beneath it
+  could never show through. Removed — landmasses now sit on the section
+  background. The two lines are retained, commented, under `7a Ground`.
+
+## v0.3.3 — 4 August 2026 (superseded, never tagged)
+
+Styling regressions from the v8 / v0.3.x work.
+
+**Force graph stopped drifting.** `clampAll()` zeroed a node's velocity on
+contact with the wall. That was fine at 13 nodes; at 36 far more nodes rest
+against an edge at any moment, so the drift was being cancelled faster than it
+accumulated. Nodes now reflect off the wall at `CFG.bounce` (0.35) and turn
+back into the field. `driftAmp` also raised .070 → .095.
+
+**Tooltip blocked node dragging.** A draggable tooltip must accept pointer
+events, so it swallows any drag beginning underneath it. Harmless where marks
+are static; wrong on a force graph, where the tooltip sits over the node you
+are reaching for. `draggable` is now a per-preset decision and `network` sets
+it false. The engine publishes `data-draggable` so CSS can set
+`pointer-events: none` to match.
+
+**Dropdown rendered as a native control.** `.eureka-select` lost to more
+specific rules in the host stylesheet. Scoped to `.eureka .eureka-select`, and
+`color-scheme: dark` added — the only reliable way to make a native option
+list render dark.
+
+**Core secrets no longer look different.** `core` remains in the data but must
+not change how a node renders: a register is a register, not a ranking. Node
+size, stroke weight and label colour are now identical across all 29. The
+"Core asset" legend entry is removed.
+
+**Application filter** moved to the end of the control group and relabelled
+`APPLICATION`.
+
+## v0.3.2 — 4 August 2026
+
+**Charts filled only the top half of their section.** The v0.3.0 migration
+inserted `<div data-eureka>` between the Code Embed and the `.eureka` root.
+That div has no CSS, so `height: auto` — and `.eureka { height: 100% }`
+resolving against an auto-height parent collapses to its `min-height: 420px`.
+On a taller section that is roughly half.
+
+Fixed by removing the wrapper rather than styling it: the mount point now
+*becomes* the `.eureka` root. `classList.add` preserves any class set in the
+Designer. DOM depth now matches what the CSS was always written for.
+
+Also added `.w-embed:has(> [data-eureka]) { height: 100% }` — Webflow's own
+Code Embed wrapper is height:auto and sits in the same chain. Harmless where
+the parent is auto; the chart falls back to min-height as before.
+
+No other change.
+
 ## v0.3.0 — 4 August 2026
 
 **Delivery changed.** Charts are now self-mounting JS modules served from

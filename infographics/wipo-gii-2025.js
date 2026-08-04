@@ -1,13 +1,13 @@
 /* ═══════════════════════════════════════════════════════════════════════
      EUREKA · 001 · wipo-gii-2025 · v12
      Innovation Geography — WIPO GII 2025 choropleth.
-     Requires eureka.js + eureka.css v0.3.0, D3 v7 and TopoJSON in the head.
+     Requires eureka.js + eureka.css v0.3.4, D3 v7 and TopoJSON in the head.
 
      HEAD CODE (Site Settings → Custom Code → Head) — all four lines:
-       <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.0/eureka.css">
+       <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.4/eureka.css">
        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
-       <script src="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.0/eureka.js"></script>
+       <script src="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.4/eureka.js"></script>
      The jsDelivr tag is pinned and immutable — bump it to release, never
      point at a branch.
 
@@ -43,10 +43,10 @@ if (typeof EUREKA === 'undefined' || !EUREKA.boot) {
   return;
 }
 
-var CSS  = "/* \u2500\u2500 \u00a73 TOKENS \u00b7 Tier 2 locals \u2500\u2500 */\n.eureka--wipo-gii {\n  --gii-border:    rgba(0,100,145,0.16);\n  --gii-seam:      rgba(0,18,38,0.5);\n  --gii-domain-lo: 14;\n  --gii-domain-hi: 66;\n}";
-var HTML = "<div class=\"eureka eureka--wipo-gii\" data-cycling=\"false\">\n\n  <div class=\"eureka-bar\">\n    <div class=\"eureka-row\">\n      <span class=\"eureka-eyebrow\">\n        <span class=\"eureka-dot\" aria-hidden=\"true\"></span>\n        Innovation Geography &middot; WIPO GII 2025\n      </span>\n      <span class=\"eureka-stats\">\n        <span class=\"eureka-stat\">Economies <b>139</b></span>\n        <span class=\"eureka-stat\">Peak score <b>66.0</b></span>\n      </span>\n    </div>\n  </div>\n\n  <div class=\"eureka-canvas\">\n    <div class=\"eureka-loader\">Loading&hellip;</div>\n    <!-- No <title> element: browsers render SVG <title> as a native hover\n         tooltip, which fought the real one. aria-label carries the accessible\n         name; the description lives in the .eureka-sr block below. -->\n    <svg role=\"img\"\n         aria-label=\"Innovation Geography \u2014 WIPO Global Innovation Index 2025\"\n         aria-describedby=\"gii-desc-wipo-gii\"></svg>\n  </div>\n\n  <div class=\"eureka-bar\">\n    <div class=\"eureka-row eureka-row--tight\">\n      <span class=\"eureka-scale\">\n        <span class=\"eureka-scale-label\">Innovation score</span>\n        <span class=\"eureka-scale-ramp\"></span>\n      </span>\n      <span class=\"eureka-credit\">Source: WIPO GII 2025</span>\n    </div>\n  </div>\n\n  <div class=\"eureka-sr\">\n    <p id=\"gii-desc-wipo-gii\">World choropleth of 139 economies coloured by their\n      WIPO Global Innovation Index 2025 score. Deep navy is lower, electric cyan\n      higher. Pulse rings mark the top ten. Hover a country for its rank and score.</p>\n    <p>Top ten innovation economies by WIPO GII 2025 score:</p>\n    <ol>\n      <li>Switzerland \u2014 66.0</li><li>Sweden \u2014 62.6</li>\n      <li>United States \u2014 61.7</li><li>Republic of Korea \u2014 60.0</li>\n      <li>Singapore \u2014 59.9</li><li>United Kingdom \u2014 59.1</li>\n      <li>Finland \u2014 57.7</li><li>Netherlands \u2014 57.0</li>\n      <li>Denmark \u2014 56.9</li><li>China \u2014 56.6</li>\n    </ol>\n  </div>\n</div>";
+var CSS   = "/* \u2500\u2500 \u00a73 TOKENS \u00b7 Tier 2 locals \u2500\u2500 */\n.eureka--wipo-gii {\n  --gii-border:    rgba(0,100,145,0.16);\n  --gii-seam:      rgba(0,18,38,0.5);\n  --gii-domain-lo: 14;\n  --gii-domain-hi: 66;\n}";
+var INNER = "<div class=\"eureka-bar\">\n    <div class=\"eureka-row\">\n      <span class=\"eureka-eyebrow\">\n        <span class=\"eureka-dot\" aria-hidden=\"true\"></span>\n        Innovation Geography &middot; WIPO GII 2025\n      </span>\n      <span class=\"eureka-stats\">\n        <span class=\"eureka-stat\">Economies <b>139</b></span>\n        <span class=\"eureka-stat\">Peak score <b>66.0</b></span>\n      </span>\n    </div>\n  </div>\n\n  <div class=\"eureka-canvas\">\n    <div class=\"eureka-loader\">Loading&hellip;</div>\n    <!-- No <title> element: browsers render SVG <title> as a native hover\n         tooltip, which fought the real one. aria-label carries the accessible\n         name; the description lives in the .eureka-sr block below. -->\n    <svg role=\"img\"\n         aria-label=\"Innovation Geography \u2014 WIPO Global Innovation Index 2025\"\n         aria-describedby=\"gii-desc-wipo-gii\"></svg>\n  </div>\n\n  <div class=\"eureka-bar\">\n    <div class=\"eureka-row eureka-row--tight\">\n      <div class=\"eureka-scale\">\n        <div class=\"eureka-scale-label\">Innovation score</div>\n        <div class=\"eureka-scale-ramp\"></div>\n      </div>\n      <span class=\"eureka-credit\">Source: WIPO GII 2025</span>\n    </div>\n  </div>\n\n  <div class=\"eureka-sr\">\n    <p id=\"gii-desc-wipo-gii\">World choropleth of 139 economies coloured by their\n      WIPO Global Innovation Index 2025 score. Deep navy is lower, electric cyan\n      higher. Pulse rings mark the top ten. Hover a country for its rank and score.</p>\n    <p>Top ten innovation economies by WIPO GII 2025 score:</p>\n    <ol>\n      <li>Switzerland \u2014 66.0</li><li>Sweden \u2014 62.6</li>\n      <li>United States \u2014 61.7</li><li>Republic of Korea \u2014 60.0</li>\n      <li>Singapore \u2014 59.9</li><li>United Kingdom \u2014 59.1</li>\n      <li>Finland \u2014 57.7</li><li>Netherlands \u2014 57.0</li>\n      <li>Denmark \u2014 56.9</li><li>China \u2014 56.6</li>\n    </ol>\n  </div>";
+var CLASSES = ["eureka", "eureka--wipo-gii"];
 
-/* One <style> per slug, however many instances are on the page. */
 function injectCSS() {
   var id = 'eureka-css-' + SLUG;
   if (document.getElementById(id)) return;
@@ -56,10 +56,14 @@ function injectCSS() {
   document.head.appendChild(el);
 }
 
-/* Each mount point gets its own instance. Everything below is scoped to
-   `host`, so two of the same chart on one page do not collide. */
+/* The MOUNT POINT becomes the .eureka root — no wrapper is inserted, because
+   an intermediate auto-height div collapses `height:100%` to the min-height.
+   classList.add rather than className, so any class set in the Designer
+   survives. Everything is scoped to `host`, so two instances do not collide. */
 function build(host) {
-  host.innerHTML = HTML;
+  CLASSES.forEach(function (c) { host.classList.add(c); });
+  host.setAttribute('data-cycling', 'false');
+  host.innerHTML = INNER;
 
 
   /* ═══ §1 CONFIG ═══════════════════════════════════════════════════════════ */
@@ -167,8 +171,7 @@ function build(host) {
 
   /* ═══ §9 BOOT ═════════════════════════════════════════════════════════════ */
 
-  var root = host.querySelector('.eureka--wipo-gii');
-  if (!root) return;
+  var root = host;
   var pane   = root.querySelector('.eureka-canvas');
   var svgEl  = pane.querySelector('svg');
   var loader = pane.querySelector('.eureka-loader');
@@ -253,9 +256,13 @@ function build(host) {
 
       svg.selectAll('*').remove();
 
-      /* 7a Ground */
-      svg.append('rect').attr('width',W).attr('height',H)
-         .attr('fill',T.ocean).attr('aria-hidden','true');
+      /* 7a Ground — none. The chart used to paint an ocean rect across the
+         whole canvas, which is why the map read as a blue slab rather than
+         landmasses over the page. The section background now shows through.
+         To restore a painted sea:
+           svg.append('rect').attr('width',W).attr('height',H)
+              .attr('fill',T.ocean).attr('aria-hidden','true');
+      */
 
       /* 7b Grid */
       svg.append('path')

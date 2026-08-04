@@ -1,12 +1,12 @@
 /* ═══════════════════════════════════════════════════════════════════════
      EUREKA · 002 · nighthawk-trade-secrets · v8
-     Requires eureka.js + eureka.css v0.3.0 and D3 v7 in the site head.
+     Requires eureka.js + eureka.css v0.3.4 and D3 v7 in the site head.
 
      HEAD CODE (Site Settings → Custom Code → Head) — all four lines:
-       <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.0/eureka.css">
+       <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.4/eureka.css">
        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
-       <script src="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.0/eureka.js"></script>
+       <script src="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.4/eureka.js"></script>
      The jsDelivr tag is pinned and immutable — bump it to release, never
      point at a branch.
 
@@ -20,7 +20,7 @@
          cross   = carried all 6 categories and 28 hierarchy links,
                    burying the coupling it existed to show
        Now three, each answering a different question:
-         REGISTER      root + categories + secrets, hierarchy only
+         TRADE SECRETS root + categories + secrets, hierarchy only
          TAXONOMY      root + categories — how the program is organised
          DEPENDENCIES  secrets only, cross-links only — what couples to what
      · Forces retuned for 35 nodes rather than 13.
@@ -43,10 +43,10 @@ if (typeof EUREKA === 'undefined' || !EUREKA.boot) {
   return;
 }
 
-var CSS  = "/* \u2500\u2500 \u00a73 TOKENS \u00b7 Tier 2 locals \u2500\u2500 */\n.eureka--nighthawk {\n  --nh-root-fill:#06182c; --nh-root-str:#3D8FD8;\n  --nh-cat-fill: #081D36; --nh-cat-str: #00B8E0;\n  --nh-sec-fill: #0B1E30; --nh-sec-str: #2E6E96;\n  --nh-core-str: #6FD3F5;\n  --nh-cross:    #0083B5;\n}\n.eureka--nighthawk .eureka-e-ts  { stroke:#0B2D52; stroke-width:1;   stroke-opacity:.7 }\n.eureka--nighthawk .eureka-e-cat { stroke:#003B75; stroke-width:1.4; stroke-opacity:.75 }\n.eureka--nighthawk .eureka-e-x   { stroke:#0083B5; stroke-width:1.1; stroke-opacity:.55; stroke-dasharray:4,4 }\n.eureka--nighthawk .eureka-swatch--core {\n  border:2px solid var(--nh-core-str); background:var(--nh-sec-fill);\n}";
-var HTML = "<div class=\"eureka eureka--nighthawk\" data-cycling=\"false\">\n\n  <div class=\"eureka-bar\">\n    <div class=\"eureka-row\">\n      <span class=\"eureka-eyebrow\">\n        <span class=\"eureka-dot\" aria-hidden=\"true\"></span>\n        Project Nighthawk &middot; Trade Secrets Register\n      </span>\n      <span class=\"eureka-controls\">\n        <select class=\"eureka-select\" data-app aria-label=\"Filter by application\">\n          <option value=\"\">All applications</option>\n        </select>\n        <button class=\"eureka-control\" data-on=\"true\" data-m=\"register\">Register</button>\n        <button class=\"eureka-control\" data-m=\"taxonomy\">Taxonomy</button>\n        <button class=\"eureka-control\" data-m=\"deps\">Dependencies</button>\n      </span>\n    </div>\n    <div class=\"eureka-row\">\n      <span class=\"eureka-legend\">\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch\" style=\"background:#3D8FD8\"></i>Program</span>\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch\" style=\"background:#00B8E0\"></i>Taxonomy</span>\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch eureka-swatch--ring\"></i>Trade secret</span>\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch eureka-swatch--core\"></i>Core asset</span>\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch eureka-swatch--dash\"></i>Cross-dependency</span>\n      </span>\n    </div>\n  </div>\n\n  <div class=\"eureka-canvas\">\n    <svg role=\"img\" aria-label=\"Project Nighthawk trade secrets register\"\n         aria-describedby=\"nh-desc\"></svg>\n  </div>\n\n  <div class=\"eureka-bar\">\n    <div class=\"eureka-row eureka-row--tight\">\n      <span class=\"eureka-stats\">\n        <span class=\"eureka-stat\">Secrets <b data-f=\"s\">&mdash;</b></span>\n        <span class=\"eureka-stat\">Links <b data-f=\"e\">&mdash;</b></span>\n        <span class=\"eureka-stat eureka-stat--mode\">View <b data-f=\"m\">REGISTER</b></span>\n      </span>\n      <span class=\"eureka-credit\">Source: supplied</span>\n    </div>\n  </div>\n\n  <div class=\"eureka-sr\">\n    <p id=\"nh-desc\">Force-directed register of 29 trade secrets across six\n      technology categories and four applications, showing cross-dependencies\n      between secrets. Illustrative dataset; entities are fictional.</p>\n  </div>\n</div>";
+var CSS   = "/* \u2500\u2500 \u00a73 TOKENS \u00b7 Tier 2 locals \u2500\u2500 */\n.eureka--nighthawk {\n  --nh-root-fill:#06182c; --nh-root-str:#3D8FD8;\n  --nh-cat-fill: #081D36; --nh-cat-str: #00B8E0;\n  --nh-sec-fill: #0B1E30; --nh-sec-str: #2E6E96;\n  --nh-cross:    #0083B5;\n}\n.eureka--nighthawk .eureka-e-ts  { stroke:#0B2D52; stroke-width:1;   stroke-opacity:.7 }\n.eureka--nighthawk .eureka-e-cat { stroke:#003B75; stroke-width:1.4; stroke-opacity:.75 }\n.eureka--nighthawk .eureka-e-x   { stroke:#0083B5; stroke-width:1.1; stroke-opacity:.55; stroke-dasharray:4,4 }";
+var INNER = "<div class=\"eureka-bar\">\n    <div class=\"eureka-row\">\n      <span class=\"eureka-eyebrow\">\n        <span class=\"eureka-dot\" aria-hidden=\"true\"></span>\n        Project Nighthawk &middot; Trade Secrets Network\n      </span>\n      <span class=\"eureka-controls\">\n        <button class=\"eureka-control\" data-on=\"true\" data-m=\"register\">Trade Secrets</button>\n        <button class=\"eureka-control\" data-m=\"taxonomy\">Taxonomy</button>\n        <button class=\"eureka-control\" data-m=\"deps\">Dependencies</button>\n        <select class=\"eureka-select\" data-app aria-label=\"Filter by application\">\n          <option value=\"\">Application</option>\n        </select>\n      </span>\n    </div>\n    <div class=\"eureka-row\">\n      <span class=\"eureka-legend\">\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch\" style=\"background:#3D8FD8\"></i>Program</span>\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch\" style=\"background:#00B8E0\"></i>Taxonomy</span>\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch eureka-swatch--ring\"></i>Trade secret</span>\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch eureka-swatch--dash\"></i>Cross-dependency</span>\n      </span>\n    </div>\n  </div>\n\n  <div class=\"eureka-canvas\">\n    <svg role=\"img\" aria-label=\"Project Nighthawk \u2014 trade secrets network\"\n         aria-describedby=\"nh-desc\"></svg>\n  </div>\n\n  <div class=\"eureka-bar\">\n    <div class=\"eureka-row eureka-row--tight\">\n      <span class=\"eureka-stats\">\n        <span class=\"eureka-stat\">Secrets <b data-f=\"s\">&mdash;</b></span>\n        <span class=\"eureka-stat\">Links <b data-f=\"e\">&mdash;</b></span>\n        <span class=\"eureka-stat eureka-stat--mode\">View <b data-f=\"m\">TRADE SECRETS</b></span>\n      </span>\n      <span class=\"eureka-credit\">Source: supplied</span>\n    </div>\n  </div>\n\n  <div class=\"eureka-sr\">\n    <p id=\"nh-desc\">Force-directed register of 29 trade secrets across six\n      technology categories and four applications, showing cross-dependencies\n      between secrets. Illustrative dataset; entities are fictional.</p>\n  </div>";
+var CLASSES = ["eureka", "eureka--nighthawk"];
 
-/* One <style> per slug, however many instances are on the page. */
 function injectCSS() {
   var id = 'eureka-css-' + SLUG;
   if (document.getElementById(id)) return;
@@ -56,10 +56,14 @@ function injectCSS() {
   document.head.appendChild(el);
 }
 
-/* Each mount point gets its own instance. Everything below is scoped to
-   `host`, so two of the same chart on one page do not collide. */
+/* The MOUNT POINT becomes the .eureka root — no wrapper is inserted, because
+   an intermediate auto-height div collapses `height:100%` to the min-height.
+   classList.add rather than className, so any class set in the Designer
+   survives. Everything is scoped to `host`, so two instances do not collide. */
 function build(host) {
-  host.innerHTML = HTML;
+  CLASSES.forEach(function (c) { host.classList.add(c); });
+  host.setAttribute('data-cycling', 'false');
+  host.innerHTML = INNER;
 
 
   /* ═══ §1 CONFIG — layout physics only; cycle timing is in EUREKA.defaults ══ */
@@ -70,8 +74,9 @@ function build(host) {
     pad:14, labelDrop:16,
     vDecay:.55, aDecay:.030,
     ambient:.018, dragAlpha:.25,
-    driftAmp:.070, driftRate:.0050,
-    rRoot:26, rCat:15, rSec:11, rCore:13,
+    driftAmp:.095, driftRate:.0050,
+    bounce:.35,          /* wall rebound; 0 = stick, 1 = elastic */
+    rRoot:26, rCat:15, rSec:12,
     collide:11
   };
 
@@ -152,14 +157,13 @@ function build(host) {
   SECRETS.forEach(function(s){ byId[s.id] = s; });
 
   function rOf(d){
-    return d.type==='root' ? CFG.rRoot
-         : d.type==='cat'  ? CFG.rCat
-         : d.core          ? CFG.rCore : CFG.rSec;
+    return d.type==='root' ? CFG.rRoot : d.type==='cat' ? CFG.rCat : CFG.rSec;
   }
   function cOf(d){ return COL[d.type==='secret'?'sec':d.type]; }
-  function strOf(d){
-    return d.type==='secret' && d.core ? '#6FD3F5' : cOf(d).str;
-  }
+  /* Every trade secret renders identically. `core` stays in the data and is
+     available to the tooltip, but it must not change how a node looks — the
+     register is a register, not a ranking. */
+  function strOf(d){ return cOf(d).str; }
   function catName(id){
     var c = CATS.filter(function(x){ return x.id===id; })[0];
     return c ? c.name : '';
@@ -178,8 +182,7 @@ function build(host) {
 
   /* ═══ §9 BOOT ═════════════════════════════════════════════════════════════ */
 
-  var root = host.querySelector('.eureka--nighthawk');
-  if (!root) return;
+  var root = host;
   var pane  = root.querySelector('.eureka-canvas');
   var svgEl = pane.querySelector('svg');
   var sel   = root.querySelector('[data-app]');
@@ -220,11 +223,15 @@ function build(host) {
     var m=CFG.pad+rOf(d), drop=d.type==='cat'?CFG.labelDrop:0;
     return Math.max(m,Math.min(y,H()-m-drop));
   }
+  /* Nodes are held inside the container. Zeroing velocity on contact — which
+     v6 did with 13 nodes — kills the drift outright at 36, because far more
+     nodes rest against a wall at any moment. Reflect instead, so a node that
+     reaches the edge turns back into the field and keeps moving. */
   function clampAll(){
     for (var i=0;i<nodes.length;i++){
       var n=nodes[i], nx=limX(n,n.x), ny=limY(n,n.y);
-      if(nx!==n.x){ n.x=nx; n.vx=0; }
-      if(ny!==n.y){ n.y=ny; n.vy=0; }
+      if(nx!==n.x){ n.x=nx; n.vx = -n.vx * CFG.bounce; }
+      if(ny!==n.y){ n.y=ny; n.vy = -n.vy * CFG.bounce; }
     }
   }
 
@@ -295,7 +302,7 @@ function build(host) {
   }
 
   var cycle = EUREKA.cycle({
-    preset: 'network',
+    preset: 'network',   /* network sets draggable:false — see below */
     host: pane, tip: tip, frame: frame, items: [],
     geom: function (n) {
       var r = rOf(n);
@@ -315,7 +322,7 @@ function build(host) {
     out.s.textContent = d.secrets;
     out.e.textContent = d.links.length;
     out.m.textContent = mode==='deps' ? 'DEPENDENCIES'
-                      : mode==='taxonomy' ? 'TAXONOMY' : 'REGISTER';
+                      : mode==='taxonomy' ? 'TAXONOMY' : 'TRADE SECRETS';
 
     layer.selectAll('*').remove();
     frame.invalidate();
@@ -357,14 +364,14 @@ function build(host) {
       .attr('stroke', strOf)
       .attr('stroke-width', function(n){ return n.type==='root'?1.5:1; })
       .attr('stroke-opacity', function(n){
-        return n.type==='secret' ? (n.core?.16:.09) : .15; });
+        return n.type==='secret' ? .10 : .15; });
 
     /* Body */
     nodeSel.append('circle').attr('r', rOf)
       .attr('fill', function(n){ return cOf(n).fill; })
       .attr('stroke', strOf)
       .attr('stroke-width', function(n){
-        return n.type==='root'?2 : n.type==='cat'?1.5 : n.core?1.8:1; });
+        return n.type==='root'?2 : n.type==='cat'?1.5 : 1; });
 
     /* Root — two lines */
     var rg = nodeSel.filter(function(n){ return n.type==='root'; });
@@ -394,8 +401,7 @@ function build(host) {
       .attr('text-anchor','middle').attr('dominant-baseline','central')
       .attr('font-family','var(--eureka-mono)').attr('font-size',6.5)
       .attr('font-weight',500).attr('letter-spacing',.3)
-      .attr('fill', function(n){ return n.core ? '#9FE2FA' : '#00B8E0'; })
-      .attr('pointer-events','none');
+      .attr('fill','#00B8E0').attr('pointer-events','none');
 
     nodeSel
       .on('mouseenter', function(e,n){ cycle.hoverIn(n, e); })
