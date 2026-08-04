@@ -1,0 +1,50 @@
+{
+  "schema": 2,
+  "libraryVersion": "0.3.0",
+  "updated": "2026-08-04",
+  "cdn": "https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.0/",
+  "note": "Charts are self-mounting modules. One repo tag versions everything; the Webflow embed carries the tag.",
+  "artefacts": [
+    {
+      "slug": "wipo-gii-2025",
+      "title": "Innovation Geography",
+      "chart": "v12",
+      "category": "infographic",
+      "family": "geographic",
+      "module": "infographics/wipo-gii-2025.js",
+      "deps": ["d3", "topojson"],
+      "webflowPage": "691d6a0020e40a0e28d8e438",
+      "renderTested": false
+    },
+    {
+      "slug": "nighthawk",
+      "title": "Project Nighthawk — trade secrets register",
+      "chart": "v8",
+      "category": "infographic",
+      "family": "network",
+      "module": "infographics/nighthawk-trade-secrets.js",
+      "data": "data/nighthawk.json",
+      "deps": ["d3"],
+      "webflowPage": "691d6a0020e40a0e28d8e438",
+      "renderTested": false
+    },
+    {
+      "slug": "au-patent-process",
+      "title": "Australian patent process — standard",
+      "category": "flowchart",
+      "family": "process",
+      "module": null,
+      "status": "not-ported",
+      "note": "Runs standalone in Webflow. EUREKA.cycle was extracted from it; port once the engine is proven."
+    },
+    {
+      "slug": "cpc-sunburst",
+      "title": "CPC hierarchy",
+      "category": "infographic",
+      "family": "hierarchy",
+      "module": null,
+      "status": "not-ported"
+    }
+  ],
+  "familiesWithoutReference": ["ranking", "temporal"]
+}

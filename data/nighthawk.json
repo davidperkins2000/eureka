@@ -1,0 +1,549 @@
+{
+  "meta": {
+    "id": "nighthawk",
+    "title": "Project Nighthawk",
+    "code": "HAWK-TS",
+    "schema": 1,
+    "note": "Illustrative dataset. Entities and asset records are fictional; the taxonomy, cross-dependency structure and protection rationales model how a real dual-use trade secret register is organised.",
+    "embeddedIn": "infographics/nighthawk-trade-secrets.js \u2014 keep the two in step"
+  },
+  "secrets": [
+    {
+      "id": "C101",
+      "cat": "C",
+      "label": "DWCP",
+      "name": "Dynamic Swarm Consensus Protocol",
+      "desc": "Hybrid consensus blending time-windowed majority voting with priority-weighted nodes, resolving conflicting instructions and reassigning leadership within 100ms.",
+      "cross": [
+        "N208",
+        "A450",
+        "X503",
+        "C134"
+      ],
+      "w": 0.97,
+      "why": "undetectable",
+      "apps": [
+        "HAWKEYE",
+        "LIFELINE",
+        "MERIDIAN",
+        "TIDEWATER"
+      ],
+      "core": true
+    },
+    {
+      "id": "C134",
+      "cat": "C",
+      "label": "GDCP",
+      "name": "GPS-Denied Collaborative Positioning",
+      "desc": "Swarm members derive shared position from relative ranging and visual landmarks when satellite navigation is unavailable, holding formation inside structures and tunnels.",
+      "cross": [
+        "C101",
+        "N221",
+        "O614"
+      ],
+      "w": 0.89,
+      "why": "undetectable",
+      "apps": [
+        "LIFELINE",
+        "HAWKEYE"
+      ],
+      "core": false
+    },
+    {
+      "id": "C156",
+      "cat": "C",
+      "label": "SASK",
+      "name": "Sea-State Adaptive Station-Keeping",
+      "desc": "Control response curves that hold position above a moving sea surface across varying swell and gust conditions without operator retuning.",
+      "cross": [
+        "O629",
+        "D341"
+      ],
+      "w": 0.71,
+      "why": "undetectable",
+      "apps": [
+        "TIDEWATER"
+      ],
+      "core": false
+    },
+    {
+      "id": "C178",
+      "cat": "C",
+      "label": "CFAB",
+      "name": "Corridor-Following Autonomy Behaviours",
+      "desc": "Autonomous tracking of pipelines, conductors and haul roads at survey altitude, including junction handling and re-acquisition after occlusion.",
+      "cross": [
+        "A491",
+        "O637"
+      ],
+      "w": 0.76,
+      "why": "undetectable",
+      "apps": [
+        "MERIDIAN"
+      ],
+      "core": false
+    },
+    {
+      "id": "C192",
+      "cat": "C",
+      "label": "IEMB",
+      "name": "Interception Envelope Manoeuvre Behaviours",
+      "desc": "Coordinated approach and shadowing behaviours for closing on an uncooperative airborne target and holding relative position while classification is confirmed.",
+      "cross": [
+        "A450",
+        "A473",
+        "X541"
+      ],
+      "w": 0.93,
+      "why": "export",
+      "apps": [
+        "HAWKEYE",
+        "TIDEWATER"
+      ],
+      "core": false
+    },
+    {
+      "id": "N208",
+      "cat": "N",
+      "label": "SSNR",
+      "name": "Sub-second Node Recovery",
+      "desc": "Mesh re-routing and handshake compression enabling degraded-link node reintegration in under one second without mission interruption.",
+      "cross": [
+        "C101",
+        "X503",
+        "N221"
+      ],
+      "w": 0.88,
+      "why": "undetectable",
+      "apps": [
+        "HAWKEYE",
+        "LIFELINE",
+        "MERIDIAN",
+        "TIDEWATER"
+      ],
+      "core": true
+    },
+    {
+      "id": "N221",
+      "cat": "N",
+      "label": "FAMH",
+      "name": "Frequency-Agile Mesh Hopping",
+      "desc": "Coordinated channel agility that preserves swarm cohesion under broadband interference, with rejoin behaviour for members that lose the hopping schedule.",
+      "cross": [
+        "N208",
+        "C134",
+        "X529"
+      ],
+      "w": 0.91,
+      "why": "export",
+      "apps": [
+        "HAWKEYE"
+      ],
+      "core": false
+    },
+    {
+      "id": "N244",
+      "cat": "N",
+      "label": "FRRB",
+      "name": "First-Responder Radio Bridging",
+      "desc": "Interoperability layer that relays swarm telemetry onto incumbent emergency services radio networks without dedicated ground equipment.",
+      "cross": [
+        "N208",
+        "O614"
+      ],
+      "w": 0.64,
+      "why": "disclosure",
+      "apps": [
+        "LIFELINE"
+      ],
+      "core": false
+    },
+    {
+      "id": "N267",
+      "cat": "N",
+      "label": "OWRC",
+      "name": "Over-Water Relay Chain",
+      "desc": "Link budget and relay spacing method maintaining vessel-to-swarm connectivity beyond line of sight over open water.",
+      "cross": [
+        "N208",
+        "O629"
+      ],
+      "w": 0.72,
+      "why": "disclosure",
+      "apps": [
+        "TIDEWATER"
+      ],
+      "core": false
+    },
+    {
+      "id": "D312",
+      "cat": "D",
+      "label": "SPGU",
+      "name": "Silent Propulsion Geometry \u2014 Urban",
+      "desc": "Propeller blade geometry and housing configuration reducing acoustic signature below 40dB at 20m in urban canyon reflective environments.",
+      "cross": [
+        "A450",
+        "D358"
+      ],
+      "w": 0.85,
+      "why": "disclosure",
+      "apps": [
+        "HAWKEYE"
+      ],
+      "core": false
+    },
+    {
+      "id": "D341",
+      "cat": "D",
+      "label": "MCCP",
+      "name": "Marine Corrosion Coating Process",
+      "desc": "Coating chemistry and application sequence extending airframe and motor service life under continuous salt exposure and deck washdown.",
+      "cross": [
+        "C156",
+        "D372"
+      ],
+      "w": 0.67,
+      "why": "disclosure",
+      "apps": [
+        "TIDEWATER"
+      ],
+      "core": false
+    },
+    {
+      "id": "D358",
+      "cat": "D",
+      "label": "TMEP",
+      "name": "Thermal-Managed Endurance Pack",
+      "desc": "Cell arrangement and thermal path design sustaining long survey sorties in high ambient temperature without derating.",
+      "cross": [
+        "D312",
+        "O637"
+      ],
+      "w": 0.79,
+      "why": "disclosure",
+      "apps": [
+        "MERIDIAN",
+        "TIDEWATER"
+      ],
+      "core": false
+    },
+    {
+      "id": "D372",
+      "cat": "D",
+      "label": "DTRG",
+      "name": "Debris-Tolerant Rotor Guard",
+      "desc": "Guard geometry permitting contact with rubble, wiring and vegetation while preserving lift efficiency and controllability.",
+      "cross": [
+        "D341",
+        "O614"
+      ],
+      "w": 0.62,
+      "why": "disclosure",
+      "apps": [
+        "LIFELINE"
+      ],
+      "core": false
+    },
+    {
+      "id": "D389",
+      "cat": "D",
+      "label": "LORP",
+      "name": "Low-Observable Radar Profile",
+      "desc": "Airframe shaping and material stack reducing radar return of the platform across the bands used by common small-craft and shipborne sets.",
+      "cross": [
+        "D312",
+        "C192"
+      ],
+      "w": 0.87,
+      "why": "export",
+      "apps": [
+        "HAWKEYE",
+        "TIDEWATER"
+      ],
+      "core": false
+    },
+    {
+      "id": "A450",
+      "cat": "A",
+      "label": "ATAA",
+      "name": "Adaptive Threat-Avoidance AI",
+      "desc": "On-board inference classifying threats across RF, visual and acoustic channels, triggering evasion trajectories without ground control authorisation.",
+      "cross": [
+        "C101",
+        "D312",
+        "X503",
+        "C192"
+      ],
+      "w": 0.96,
+      "why": "export",
+      "apps": [
+        "HAWKEYE",
+        "TIDEWATER"
+      ],
+      "core": false
+    },
+    {
+      "id": "A462",
+      "cat": "A",
+      "label": "VTSC",
+      "name": "Victim Thermal Signature Classifier",
+      "desc": "Discriminates human thermal signatures from heated debris and residual fire in collapsed structures, prioritising search areas for ground teams.",
+      "cross": [
+        "A518",
+        "O614"
+      ],
+      "w": 0.83,
+      "why": "unpatentable",
+      "apps": [
+        "LIFELINE"
+      ],
+      "core": false
+    },
+    {
+      "id": "A473",
+      "cat": "A",
+      "label": "HICM",
+      "name": "Hostile Intent Classification Model",
+      "desc": "Behavioural model separating hostile approach patterns from routine traffic \u2014 closing geometry, speed profile and formation \u2014 for both airborne and surface contacts.",
+      "cross": [
+        "A450",
+        "C192",
+        "A502",
+        "X541"
+      ],
+      "w": 0.94,
+      "why": "unpatentable",
+      "apps": [
+        "HAWKEYE",
+        "TIDEWATER"
+      ],
+      "core": false
+    },
+    {
+      "id": "A491",
+      "cat": "A",
+      "label": "SDRM",
+      "name": "Structural Defect Recognition Model",
+      "desc": "Detects corrosion, conductor wear, insulator damage and ground encroachment from survey imagery, generating ranked inspection findings.",
+      "cross": [
+        "C178",
+        "A518",
+        "O637"
+      ],
+      "w": 0.81,
+      "why": "unpatentable",
+      "apps": [
+        "MERIDIAN"
+      ],
+      "core": false
+    },
+    {
+      "id": "A502",
+      "cat": "A",
+      "label": "SCWD",
+      "name": "Small-Craft Wake Discriminator",
+      "desc": "Identifies and tracks fast small craft against sea clutter by wake and motion signature at ranges where hull detection is unreliable.",
+      "cross": [
+        "A473",
+        "A518",
+        "O652"
+      ],
+      "w": 0.9,
+      "why": "unpatentable",
+      "apps": [
+        "TIDEWATER"
+      ],
+      "core": false
+    },
+    {
+      "id": "A518",
+      "cat": "A",
+      "label": "STDP",
+      "name": "Synthetic Training Data Pipeline",
+      "desc": "Generation and curation pipeline producing labelled training corpora for every on-board model, including rare-event and degraded-sensor cases.",
+      "cross": [
+        "A462",
+        "A491",
+        "A502"
+      ],
+      "w": 0.95,
+      "why": "unpatentable",
+      "apps": [
+        "HAWKEYE",
+        "LIFELINE",
+        "MERIDIAN",
+        "TIDEWATER"
+      ],
+      "core": true
+    },
+    {
+      "id": "O601",
+      "cat": "O",
+      "label": "JWDP",
+      "name": "Joint Swarm Deployment Protocols",
+      "desc": "Multi-domain sequencing for simultaneous activation of heterogeneous swarm elements across air, ground and communications assets.",
+      "cross": [
+        "C101",
+        "X503"
+      ],
+      "w": 0.7,
+      "why": "unpatentable",
+      "apps": [
+        "HAWKEYE"
+      ],
+      "core": false
+    },
+    {
+      "id": "O614",
+      "cat": "O",
+      "label": "RDCS",
+      "name": "Rapid Deploy \u2014 Collapsed Structure",
+      "desc": "Field procedure taking a swarm from vehicle to interior search in under four minutes, including void entry ordering and team handover points.",
+      "cross": [
+        "C134",
+        "A462",
+        "D372",
+        "N244"
+      ],
+      "w": 0.75,
+      "why": "unpatentable",
+      "apps": [
+        "LIFELINE"
+      ],
+      "core": false
+    },
+    {
+      "id": "O629",
+      "cat": "O",
+      "label": "MDLR",
+      "name": "Moving-Deck Launch & Recovery",
+      "desc": "Launch and recovery sequence for a pitching, rolling deck under way, including abort criteria and crew positioning.",
+      "cross": [
+        "C156",
+        "N267"
+      ],
+      "w": 0.78,
+      "why": "unpatentable",
+      "apps": [
+        "TIDEWATER"
+      ],
+      "core": false
+    },
+    {
+      "id": "O637",
+      "cat": "O",
+      "label": "SMPH",
+      "name": "Survey Mission Planning Heuristics",
+      "desc": "Planning rules balancing coverage, overlap, endurance and lighting to hit photogrammetric accuracy targets in a single sortie.",
+      "cross": [
+        "C178",
+        "A491",
+        "D358"
+      ],
+      "w": 0.73,
+      "why": "unpatentable",
+      "apps": [
+        "MERIDIAN"
+      ],
+      "core": false
+    },
+    {
+      "id": "O652",
+      "cat": "O",
+      "label": "VPEP",
+      "name": "Vessel Protection Escalation Procedure",
+      "desc": "Graduated response doctrine for an approaching unidentified craft \u2014 observation, illumination, hailing and audible warning \u2014 with master\u2019s authority gates at each step and incident logging.",
+      "cross": [
+        "A502",
+        "A473",
+        "X541"
+      ],
+      "w": 0.86,
+      "why": "unpatentable",
+      "apps": [
+        "TIDEWATER"
+      ],
+      "core": false
+    },
+    {
+      "id": "X503",
+      "cat": "X",
+      "label": "ZLOO",
+      "name": "Zero-Latency Operator Override Bridge",
+      "desc": "Interrupt architecture ensuring operator commands propagate to all swarm nodes within one radio frame, overriding any autonomous consensus state.",
+      "cross": [
+        "C101",
+        "N208",
+        "A450",
+        "O601"
+      ],
+      "w": 0.92,
+      "why": "undetectable",
+      "apps": [
+        "HAWKEYE",
+        "LIFELINE",
+        "MERIDIAN",
+        "TIDEWATER"
+      ],
+      "core": true
+    },
+    {
+      "id": "X516",
+      "cat": "X",
+      "label": "SOMS",
+      "name": "Single-Operator Multi-Swarm Interface",
+      "desc": "Attention-management model letting one operator supervise several swarms by surfacing only decisions that require human authority.",
+      "cross": [
+        "X503",
+        "X529"
+      ],
+      "w": 0.84,
+      "why": "undetectable",
+      "apps": [
+        "HAWKEYE",
+        "LIFELINE",
+        "MERIDIAN",
+        "TIDEWATER"
+      ],
+      "core": true
+    },
+    {
+      "id": "X529",
+      "cat": "X",
+      "label": "DLOF",
+      "name": "Degraded-Link Operator Feedback",
+      "desc": "Interface behaviour communicating swarm state and confidence when telemetry is intermittent, avoiding false certainty during link loss.",
+      "cross": [
+        "N221",
+        "X516"
+      ],
+      "w": 0.69,
+      "why": "undetectable",
+      "apps": [
+        "HAWKEYE",
+        "TIDEWATER"
+      ],
+      "core": false
+    },
+    {
+      "id": "X541",
+      "cat": "X",
+      "label": "EAAG",
+      "name": "Engagement Authority Gate",
+      "desc": "Authority model binding any deterrent action to an identified human decision-maker, with pre-action confirmation, immutable audit trail and hard interlocks against autonomous escalation.",
+      "cross": [
+        "X503",
+        "C192",
+        "A473",
+        "O652"
+      ],
+      "w": 0.91,
+      "why": "export",
+      "apps": [
+        "HAWKEYE",
+        "TIDEWATER"
+      ],
+      "core": false
+    }
+  ]
+}

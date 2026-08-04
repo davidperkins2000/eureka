@@ -1,16 +1,12 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   eureka.css — v0.2.1 · 31 July 2026
-   Tier 1 shared chrome. Companion to eureka.js v0.2.1 — keep versions in step.
+   eureka.css — v0.3.0 · 4 August 2026
+   Tier 1 shared chrome. Companion to eureka.js v0.3.0 — keep versions in step.
 
    Bluescale throughout. Top bar, bottom bar and status strip share one
-   treatment; the canvas between them is transparent, so the Webflow section
-   supplies the page background and the bars read as chrome over it.
+   treatment; the canvas between them is Graph/Ocean, so the bars read a
+   shade lighter than the field they frame.
 
    Tier 2 locals belong on .eureka--{slug} in the embed, never on :root.
-
-   SCOPE — every selector below is under `.eureka` or is `:root` carrying only
-   `--eureka-*` custom properties. One keyframe, uniquely named. Nothing here
-   can reach page markup outside an infographic.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
@@ -155,7 +151,7 @@
 .eureka[data-cycling="false"] .eureka-dot { animation: none; opacity: .28; }
 
 /* ── Controls ── */
-.eureka-controls { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; align-items: center; }
+.eureka-controls { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; }
 .eureka-control {
   padding: 5px 11px; line-height: 1; cursor: pointer; border-radius: 2px;
   letter-spacing: var(--eureka-track-control);
@@ -211,8 +207,8 @@
 .eureka-swatch--ring { border: 1.5px solid #2E6E96; background: #0B1E30; }
 .eureka-swatch--dash { width: 18px; height: 0; border-radius: 0; border-top: 1.5px dashed #0083B5; }
 
-/* ── Scale (continuous ramp) ──
-   Label above the ramp; the ramp takes the label's width. No tick numbers —
+/* ── Scale (continuous ramp) ── */
+/* Label above the ramp; the ramp takes the label's width. No tick numbers —
    the scale is a legend, not an axis, and the tooltip already gives figures. */
 .eureka-scale { width: max-content; }
 .eureka-scale-label { color: var(--eureka-ink); }
