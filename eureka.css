@@ -1,0 +1,338 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   eureka.css — v0.2.1 · 31 July 2026
+   Tier 1 shared chrome. Companion to eureka.js v0.2.1 — keep versions in step.
+
+   Bluescale throughout. Top bar, bottom bar and status strip share one
+   treatment; the canvas between them is transparent, so the Webflow section
+   supplies the page background and the bars read as chrome over it.
+
+   Tier 2 locals belong on .eureka--{slug} in the embed, never on :root.
+
+   SCOPE — every selector below is under `.eureka` or is `:root` carrying only
+   `--eureka-*` custom properties. One keyframe, uniquely named. Nothing here
+   can reach page markup outside an infographic.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Webflow aliases ── */
+  --eureka-canvas:     var(--_🎨-color--tokens---graph--ocean,             #08111F);
+  --eureka-base:       var(--_🎨-color--tokens---graph--background-canvas, #0a0a0b);
+  --eureka-ink:        var(--_🎨-color--tokens---graph--label-strong,      #f6f3ec);
+  --eureka-muted:      var(--_🎨-color--tokens---graph--label-muted,       rgba(246,243,236,0.42));
+  --eureka-grid:       var(--_🎨-color--tokens---graph--grid,              rgba(246,243,236,0.04));
+  --eureka-land-empty: var(--_🎨-color--tokens---graph--land-empty,        #0B1D30);
+  --eureka-choro-lo:   var(--_🎨-color--tokens---graph--choro-low,         #0B2D52);
+  --eureka-choro-hi:   var(--_🎨-color--tokens---graph--choro-high,        #00B8E0);
+  --eureka-accent:     var(--_🎨-color--base---accent--primary,            #e45a47);
+  --eureka-play:       var(--_🎨-color--tokens---graph--node-category,     #2ad87f);
+
+  /* ── Bluescale chrome ── */
+  --eureka-bar-bg:     rgba(8,17,31,.90);
+  --eureka-bar-line:   rgba(0,184,224,.14);
+  --eureka-bar-line-2: rgba(0,184,224,.10);
+  --eureka-btn-line:   rgba(0,184,224,.48);
+  --eureka-btn-ink:    rgba(0,184,224,.82);
+  --eureka-leg-ink:    rgba(0,184,224,.72);
+  --eureka-stat-ink:   rgba(0,184,224,.55);
+
+  --eureka-tip-bg:     rgba(8,17,31,.96);
+  --eureka-tip-line:   rgba(0,184,224,.24);
+
+  /* ── Type ── */
+  --eureka-mono:  var(--_🔠-typography---font--label,
+                  'Geist Mono Variable','JetBrains Mono',ui-monospace,monospace);
+  --eureka-l1:    var(--_🔠-typography---size--label-1, 12px);
+  --eureka-l2:    var(--_🔠-typography---size--label-2, 10px);
+  --eureka-lh2:   var(--_🔠-typography---line-height--label-2, 12px);
+  --eureka-track: var(--_🔠-typography---letter-spacing--label-2, 0.75px);
+  --eureka-track-eyebrow: .13em;
+  --eureka-track-control: .1em;
+  --eureka-weight: 300;
+
+  /* ── Geometry ── */
+  --eureka-radius:     3px;
+  --eureka-bar-h:      58px;   /* 58 − 2×14 padding = 30px box → 24px headroom */
+  --eureka-bar-pad-y:  14px;
+  --eureka-bar-pad-x:  18px;
+  --eureka-bar-h2:     36px;
+
+  /* ── Motion. Mirrors EUREKA.defaults; keep in step. ── */
+  --eureka-fade:  500ms;
+  --eureka-step:  250ms;
+  --eureka-dot:   3000ms;
+  --eureka-ease:  cubic-bezier(.4, 0, .2, 1);
+  --eureka-hover: 100ms;
+}
+
+/* ── Shell ────────────────────────────────────────────────────────────────
+   margin + box-sizing only. A blanket `padding: 0` is one selector-order
+   change away from silently flattening the tooltip. */
+.eureka, .eureka *, .eureka *::before, .eureka *::after { box-sizing: border-box; }
+.eureka, .eureka * { margin: 0; }
+
+.eureka {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  /* Transparent — the Webflow section supplies the page background, so the
+     infographic merges into the page instead of sitting on its own slab.
+     Only the bars carry a fill, which is what makes them read as chrome. */
+  background: transparent;
+  font-family: var(--eureka-mono);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Canvas — the field between the bars ── */
+.eureka-canvas {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+  /* Also transparent. A map paints its own ocean inside the SVG; a force
+     graph has no ground and shows the page through. */
+  background: transparent;
+}
+.eureka-canvas > svg { display: block; width: 100%; height: 100%; }
+
+/* ── Bars — one treatment, top and bottom ── */
+.eureka-bar {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  background: var(--eureka-bar-bg);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--eureka-bar-line);
+}
+.eureka-bar:last-of-type {
+  border-bottom: none;
+  border-top: 1px solid var(--eureka-bar-line);
+}
+.eureka-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  min-height: var(--eureka-bar-h);
+  padding: var(--eureka-bar-pad-y) var(--eureka-bar-pad-x);
+}
+.eureka-row + .eureka-row {
+  min-height: var(--eureka-bar-h2);
+  padding: 0 var(--eureka-bar-pad-x);
+  border-top: 1px solid var(--eureka-bar-line-2);
+}
+.eureka-row--tight { min-height: var(--eureka-bar-h2); padding: 6px var(--eureka-bar-pad-x); }
+
+/* ── Label base ── */
+.eureka-eyebrow, .eureka-control, .eureka-leg, .eureka-stat,
+.eureka-credit, .eureka-tip-head, .eureka-tip-key, .eureka-tip-meta {
+  font-size: var(--eureka-l2);
+  line-height: var(--eureka-lh2);
+  letter-spacing: var(--eureka-track);
+  font-weight: var(--eureka-weight);
+  text-transform: uppercase;
+}
+
+/* ── Eyebrow ── */
+.eureka-eyebrow {
+  display: flex; align-items: center; gap: 9px;
+  white-space: nowrap;
+  /* Label 2 weight, inherited from the base rule. Do not override — the site
+     Label 2 is 300 and the eyebrow must match it. */
+  letter-spacing: var(--eureka-track-eyebrow);
+  color: var(--eureka-choro-hi);
+}
+.eureka-dot {
+  flex-shrink: 0; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--eureka-play);
+  box-shadow: 0 0 6px rgba(42,216,127,.55);
+  animation: eureka-pulse var(--eureka-dot) ease-in-out infinite;
+}
+@keyframes eureka-pulse { 0%,100% { opacity: 1 } 50% { opacity: .28 } }
+.eureka[data-cycling="false"] .eureka-dot { animation: none; opacity: .28; }
+
+/* ── Controls ── */
+.eureka-controls { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; align-items: center; }
+.eureka-control {
+  padding: 5px 11px; line-height: 1; cursor: pointer; border-radius: 2px;
+  letter-spacing: var(--eureka-track-control);
+  background: transparent;
+  border: 1px solid var(--eureka-btn-line);
+  color: var(--eureka-btn-ink);
+  transition: border-color var(--eureka-hover), color var(--eureka-hover),
+              background var(--eureka-hover);
+}
+.eureka-control:hover { border-color: var(--eureka-choro-hi); color: var(--eureka-choro-hi); }
+/* One active treatment for every filter. The former hi/mid/lo variants used
+   #0050AA — a blue that is not a Graph token and appears nowhere else except
+   inside gradients — and implied a hierarchy the buttons do not have. Which
+   view is active is already named in the status bar. */
+.eureka-control[data-on] {
+  background: var(--eureka-choro-hi);
+  border-color: var(--eureka-choro-hi);
+  color: var(--eureka-canvas);
+  font-weight: 500;
+}
+
+/* ── Select — same treatment as a control button ── */
+.eureka-select {
+  font-family: var(--eureka-mono);
+  font-size: var(--eureka-l2);
+  line-height: 1;
+  letter-spacing: var(--eureka-track-control);
+  text-transform: uppercase;
+  font-weight: var(--eureka-weight);
+  padding: 5px 26px 5px 11px;
+  border-radius: 2px;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--eureka-btn-line);
+  color: var(--eureka-btn-ink);
+  -webkit-appearance: none; appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+                    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: right 12px center, right 7px center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  transition: border-color var(--eureka-hover), color var(--eureka-hover);
+}
+.eureka-select:hover { border-color: var(--eureka-choro-hi); color: var(--eureka-choro-hi); }
+.eureka-select:focus-visible { outline: 1px solid var(--eureka-choro-hi); outline-offset: 2px; }
+/* Native option lists cannot be styled reliably; give them a legible dark fill. */
+.eureka-select option { background: #08111F; color: #f6f3ec; text-transform: none; }
+
+/* ── Legend (discrete key) ── */
+.eureka-legend { display: flex; gap: 18px; align-items: center; margin-left: auto; flex-wrap: wrap; }
+.eureka-leg { display: flex; align-items: center; gap: 6px; white-space: nowrap; color: var(--eureka-leg-ink); }
+.eureka-swatch { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.eureka-swatch--ring { border: 1.5px solid #2E6E96; background: #0B1E30; }
+.eureka-swatch--dash { width: 18px; height: 0; border-radius: 0; border-top: 1.5px dashed #0083B5; }
+
+/* ── Scale (continuous ramp) ──
+   Label above the ramp; the ramp takes the label's width. No tick numbers —
+   the scale is a legend, not an axis, and the tooltip already gives figures. */
+.eureka-scale { width: max-content; }
+.eureka-scale-label { color: var(--eureka-ink); }
+.eureka-scale-ramp {
+  width: 100%; height: 5px; border-radius: 3px; margin-top: 6px;
+  background: linear-gradient(90deg, var(--eureka-choro-lo), var(--eureka-choro-hi));
+}
+
+/* ── Stats / status readouts ── */
+.eureka-stats { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.eureka-stat { color: var(--eureka-stat-ink); white-space: nowrap; }
+.eureka-stat b { color: rgba(0,184,224,.85); font-weight: 500; }
+.eureka-stat--mode b { color: var(--eureka-choro-hi); }
+.eureka-credit { margin-left: auto; white-space: nowrap; color: rgba(0,184,224,.40); }
+
+/* ── Tooltip ──────────────────────────────────────────────────────────────
+   Element opacity toggles 0 → 1 only. A fractional value would dim the text
+   as well as the background; translucency lives in --eureka-tip-bg.
+   Slow fade to arrive or leave; fast while hopping between items. */
+.eureka-tip {
+  position: absolute;
+  min-width: 178px; max-width: 292px;
+  padding: 12px 15px;
+  background: var(--eureka-tip-bg);
+  border: 1px solid var(--eureka-tip-line);
+  border-radius: var(--eureka-radius);
+  color: var(--eureka-ink);
+  text-transform: none;
+  line-height: 1.55;
+  opacity: 0;
+  transition: opacity var(--eureka-fade) var(--eureka-ease);
+  backdrop-filter: blur(1.5px);
+  z-index: 20;
+  touch-action: none;
+  cursor: grab;
+}
+.eureka-tip[data-show="true"]     { opacity: 1; }
+.eureka-tip[data-show="false"]    { pointer-events: none; }
+.eureka-tip[data-stepping="true"] { transition: opacity var(--eureka-step) linear; }
+.eureka-tip[data-dragging="true"] { cursor: grabbing; transition: none; }
+
+.eureka-tip-head {
+  color: var(--eureka-choro-hi);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.eureka-tip-name {
+  font: 500 13px/1.3 var(--eureka-mono);
+  letter-spacing: .2px;
+  color: var(--eureka-ink);
+  margin-bottom: 7px;
+}
+.eureka-tip-body {
+  font: 300 11px/1.55 var(--eureka-mono);
+  letter-spacing: .1px;
+  color: rgba(246,243,236,.6);
+}
+.eureka-tip-pair {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 5px;
+}
+.eureka-tip-key   { color: var(--eureka-muted); }
+.eureka-tip-value {
+  font-size: var(--eureka-l1); font-weight: 500;
+  color: var(--eureka-choro-hi); text-transform: none;
+}
+.eureka-tip-meter {
+  height: 3px; margin: 7px 0 8px; border-radius: 2px; overflow: hidden;
+  background: rgba(0,184,224,.15);
+}
+.eureka-tip-meter-fill {
+  height: 100%; border-radius: 2px;
+  background: linear-gradient(90deg, #0050AA, #00B8E0);
+  transition: width .3s var(--eureka-ease);
+}
+.eureka-tip-meta {
+  margin-top: 9px;
+  color: #0083B5;
+}
+.eureka-tip-meta + .eureka-tip-meta { margin-top: 5px; text-transform: none; opacity: .85; }
+
+/* ── Loader ── */
+.eureka-loader {
+  position: absolute; inset: 0; z-index: 50; pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--eureka-l2); letter-spacing: .2em; text-transform: uppercase;
+  color: var(--eureka-choro-hi); opacity: .5; transition: opacity .4s;
+}
+.eureka-loader[hidden] { display: flex; opacity: 0; }
+
+/* ── Focus ────────────────────────────────────────────────────────────────
+   Marks carry tabindex="0" for keyboard use, so a pointer-drag lands focus on
+   them and the UA paints its default ring — the square that appeared around a
+   dragged node. Suppress it for pointer focus; keep a real ring for keyboard,
+   which is the only case that needs one. */
+.eureka-canvas g:focus { outline: none; }
+.eureka-canvas g:focus-visible {
+  outline: 1px solid var(--eureka-choro-hi);
+  outline-offset: 3px;
+}
+
+/* ── Accessibility ── */
+.eureka-sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0; margin: -1px;
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────────
+   Decorative motion only. The cycle keeps running — it is how a screen
+   reader user hears the tour through the aria-live tooltip. */
+@media (prefers-reduced-motion: reduce) {
+  .eureka-sweep { animation: none; }
+  .eureka-tip   { transition: opacity 200ms linear; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .eureka-legend { display: none; }
+  .eureka-row    { --eureka-bar-pad-x: 14px; }
+}
+@media (max-width: 420px) {
+  .eureka-credit { display: none; }
+}
