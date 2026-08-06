@@ -301,6 +301,7 @@ EUREKA.cycle = function (opts) {
   /* spring state, only used in mode:'flow' and during drag */
   var anchor = { x: 0, y: 0 }, pos = { x: 0, y: 0 }, vel = { x: 0, y: 0 };
   var drag = null, onSettle = null, postDrag = false;
+  var hovering = false;
   var side = null;         /* locked flip decision for the current item */
 
   function clearPhase () { clearTimeout(tPhase); tPhase = null; }
@@ -458,6 +459,7 @@ EUREKA.cycle = function (opts) {
 
   /* ── hover ── */
   function hoverIn (item, evt) {
+    hovering = true;
     pause(true);
     cur = item;
     side = null;
@@ -500,6 +502,7 @@ EUREKA.cycle = function (opts) {
   }
 
   function hoverOut () {
+    hovering = false;
     if (state !== 'held') return api;
     unpaint(cur);
     tip.hide();
@@ -622,7 +625,7 @@ EUREKA.cycle = function (opts) {
      received pointerup, a focus that never blurred. */
   function watch () {
     tWatch = setInterval(function () {
-      if (state === 'held' && !drag && !tResume) {
+      if (state === 'held' && !drag && !tResume && !hovering) {
         state = 'paused'; tip.hide(); resume();
       }
     }, C.watchdog);
