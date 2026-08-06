@@ -99,62 +99,116 @@ var CFG = {
    The SVG is capped at its own natural width and centred, so it never
    scales ABOVE 1:1 — Label 2 means 10px on a wide screen, not 23px. */
 var CSS = [
-'.eureka--flow .eureka-canvas { flex: none; height: auto; overflow: visible; }',
-'.eureka--flow .eureka-flow-pad > svg {',
-'  width: 100%; max-width: var(--flow-w, 520px); height: auto;',
-'  margin: 0 auto; overflow: visible;',
+/* ── Tier 2 tokens ──────────────────────────────────────────────────
+   A flowchart is line art and labels — it carries no data encoding, so
+   it takes NOTHING from the Graph/* group. That matters: every Graph
+   token is mode-blind (identical value in Base and Light mode, hardcoded
+   rather than aliased), so a flowchart built on them would be pinned to
+   dark forever and read as a foreign object on a light page.
+
+   The primary tokens all alias into the Neutral ramp and flip with the
+   mode, so the diagram inherits light/dark for free. Tone pair is
+   64 → 88, both real steps on the site ladder:
+     resting marks   Text - Label/Medium   Light 64 / Dark 64
+     current step    Text - Label/Strong   Light 88 / Dark 88
+   Graph/Label Muted (0.42) is deliberately unused — it is not a step on
+   the ladder and is the reason the diagram read disconnected. */
+'.eureka--flow {',
+'  --flow-dim:  var(--_🎨-color--tokens---text-label--medium);',
+'  --flow-ink:  var(--_🎨-color--tokens---text-label--strong);',
+'  --flow-line: var(--_🎨-color--tokens---border--subtle);',
+'  /* Rebind Tier 1 so the shared chrome follows the same tokens. The',
+'     accent drives the eyebrow and tooltip head; a flowchart wants both',
+'     in quiet register, not the infographic cyan. */',
+'  --eureka-ink:      var(--flow-ink);',
+'  --eureka-muted:    var(--flow-dim);',
+'  --eureka-choro-hi: var(--flow-dim);',
+'  --eureka-tip-bg:   var(--_🎨-color--tokens---background--lift-64-opacity);',
+'  --eureka-tip-line: var(--flow-line);',
+'  height: auto; min-height: 0; background: transparent;',
+'  /* Dragging the tooltip across the diagram was selecting the node',
+'     labels, leaving a blue highlight smeared over the boxes. */',
+'  -webkit-user-select: none; user-select: none;',
 '}',
-'.eureka--flow { height: auto; min-height: 0; }',
+
+/* ── Shell ── */
+'.eureka--flow .eureka-canvas { flex: none; height: auto; overflow: visible; }',
 '/* Top padding is HEADROOM for the first box\u2019s tooltip, which anchors',
 '   above it. Too little and the kernel clamps it down the canvas, so the',
 '   first step sits lower than every other one. */',
-'.eureka--flow .eureka-flow-pad { padding: 124px 16px 40px; }',
-'.eureka--flow .eureka-node-box {',
-'  fill: transparent; stroke: var(--eureka-muted); stroke-width: 1px;',
-'  transition: stroke var(--eureka-hover) ease, fill var(--eureka-hover) ease;',
+'.eureka--flow .eureka-flow-pad { padding: 124px 16px 32px; }',
+'/* Eyebrow only, centred. Deliberately NOT .eureka-bar: that carries a',
+'   fill, a blur and a hairline that would demarcate a footer the',
+'   flowchart does not have. */',
+'.eureka--flow .eureka-flow-foot {',
+'  display: flex; justify-content: center; padding: 4px 16px 0;',
+'  background: transparent; border: none;',
+'}',
+'.eureka--flow .eureka-flow-foot .eureka-eyebrow { color: var(--flow-dim); }',
+
+/* ── Diagram ── */
+'.eureka--flow .eureka-flow-pad > svg {',
+'  display: block;   /* SVG defaults to inline, where margin:0 auto does',
+'                       nothing \u2014 the diagram stayed hard left and the',
+'                       tooltip had no gutter to sit in. */',
+'  width: 100%; max-width: var(--flow-w, 520px); height: auto;',
+'  margin: 0 auto; overflow: visible;',
 '}',
 '.eureka--flow .eureka-flow-pad > svg text {',
 '  font-family: var(--eureka-mono); font-size: var(--eureka-l2);',
 '  font-weight: 300; letter-spacing: .4px;',
 '}',
 '.eureka--flow .eureka-node { cursor: default; }',
+'.eureka--flow .eureka-node-box {',
+'  fill: transparent; stroke: var(--flow-dim); stroke-width: 1px;',
+'  transition: stroke var(--eureka-hover) ease, fill var(--eureka-hover) ease;',
+'}',
 '.eureka--flow .eureka-node.is-on .eureka-node-box,',
-'.eureka--flow .eureka-node:hover .eureka-node-box { stroke: var(--eureka-ink); }',
-'.eureka--flow .eureka-node:hover .eureka-node-box { fill: rgba(246,243,236,.03); }',
+'.eureka--flow .eureka-node:hover .eureka-node-box { stroke: var(--flow-ink); }',
+'.eureka--flow .eureka-node:hover .eureka-node-box { fill: var(--_🎨-color--base---neutral--light-4); }',
 '.eureka--flow .eureka-node-label {',
-'  fill: var(--eureka-muted); text-anchor: middle; text-transform: uppercase;',
+'  fill: var(--flow-dim); text-anchor: middle; text-transform: uppercase;',
 '  transition: fill var(--eureka-hover) ease;',
 '}',
 '.eureka--flow .eureka-node.is-on .eureka-node-label,',
-'.eureka--flow .eureka-node:hover .eureka-node-label { fill: var(--eureka-ink); }',
-'.eureka--flow .eureka-edge { stroke: var(--eureka-muted); stroke-width: 1px; fill: none; }',
-'.eureka--flow .eureka-edge-head { fill: var(--eureka-muted); stroke: none; }',
+'.eureka--flow .eureka-node:hover .eureka-node-label { fill: var(--flow-ink); }',
+'.eureka--flow .eureka-edge { stroke: var(--flow-dim); stroke-width: 1px; fill: none; }',
+'.eureka--flow .eureka-edge-head { fill: var(--flow-dim); stroke: none; }',
 '.eureka--flow .eureka-anno {',
-'  fill: var(--eureka-muted); text-transform: uppercase;',
+'  fill: var(--flow-dim); text-transform: uppercase;',
 '  transition: fill var(--eureka-hover) ease;',
 '}',
-'.eureka--flow .eureka-anno.is-on { fill: var(--eureka-ink); }',
+'.eureka--flow .eureka-anno.is-on { fill: var(--flow-ink); }',
 '.eureka--flow .eureka-anno--l { text-anchor: end; }',
 '.eureka--flow .eureka-anno--r { text-anchor: start; }',
 '.eureka--flow .eureka-node:focus { outline: none; }',
-'.eureka--flow .eureka-node:focus-visible .eureka-node-box { stroke: var(--eureka-ink); }'
+'.eureka--flow .eureka-node:focus-visible .eureka-node-box { stroke: var(--flow-ink); }',
+
+/* ── Tooltip ── */
+'/* Uppercase throughout \u2014 label register, not prose. Tier 1 sets',
+'   text-transform:none on .eureka-tip, so it is turned back on here. */',
+'.eureka--flow .eureka-tip { text-transform: uppercase; }',
+'.eureka--flow .eureka-tip-head {',
+'  font-weight: 300; margin-bottom: 6px; color: var(--flow-dim);',
+'}',
+'.eureka--flow .eureka-tip-body {',
+'  text-transform: uppercase; letter-spacing: .4px; line-height: 1.7;',
+'  color: var(--flow-ink);',
+'}'
 ].join('\n');
 
 var INNER = [
 '<div class="eureka-canvas">',
 '  <div class="eureka-flow-pad">',
-'    <svg role="img" aria-label="Australian patent application procedure"',
+'    <svg role="img" aria-label="Australian patent application process"',
 '         aria-describedby="au-pat-desc"></svg>',
 '  </div>',
 '</div>',
-'<div class="eureka-bar">',
-'  <div class="eureka-row eureka-row--tight">',
-'    <span class="eureka-eyebrow">',
-'      <span class="eureka-dot" aria-hidden="true"></span>',
-'      Australian Patent Process &middot; Standard',
-'    </span>',
-'    <span class="eureka-credit">Source: IP Australia</span>',
-'  </div>',
+'<div class="eureka-flow-foot">',
+'  <span class="eureka-eyebrow">',
+'    <span class="eureka-dot" aria-hidden="true"></span>',
+'    Australian Patent Application Process',
+'  </span>',
 '</div>',
 '<div class="eureka-sr">',
 '  <p id="au-pat-desc">Procedural flowchart of a standard Australian patent',
@@ -411,11 +465,13 @@ function build(host) {
 
   var frame = EUREKA.frame(pane, svgEl);
 
+  /* No `name` row: it repeated the step label that is already sitting in
+     the box the tooltip is attached to. The head carries the timing and
+     form numbers, the body carries the note — nothing is duplicated. */
   var tip = EUREKA.tip(pane, [
     { type: 'head', field: function (d) {
         return [d.left, d.right].filter(Boolean).join(' \u00b7 ');
       }, when: function (d) { return !!(d.left || d.right); } },
-    { type: 'name', field: 'label' },
     { type: 'body', field: 'note' }
   ]);
 
@@ -453,10 +509,20 @@ function build(host) {
     /* Hover interrupt. No event is passed: with an event the kernel anchors
        to the POINTER, which is right for a force graph and wrong here — a
        flowchart tooltip belongs on the box corner, every time. */
-    sel.on('mouseenter', function (e, d) { if (d.note) cycle.hoverIn(d); })
-       .on('mouseleave', function ()      { cycle.hoverOut(); })
-       .on('focus',      function (e, d) { if (d.note) cycle.hoverIn(d); })
-       .on('blur',       function ()      { cycle.hoverOut(); });
+    /* While the tooltip is being dragged the pointer travels over other
+       boxes, and their mouseenter would hijack the tooltip — you would
+       drag "Examination Report" across the column and watch its content
+       change under your hand. The kernel already flags the drag on the
+       tooltip element, so use that as the guard rather than tracking
+       button state separately. */
+    function dragging() {
+      return tip.el.getAttribute('data-dragging') === 'true';
+    }
+
+    sel.on('mouseenter', function (e, d) { if (d.note && !dragging()) cycle.hoverIn(d); })
+       .on('mouseleave', function ()      { if (!dragging()) cycle.hoverOut(); })
+       .on('focus',      function (e, d) { if (d.note && !dragging()) cycle.hoverIn(d); })
+       .on('blur',       function ()      { if (!dragging()) cycle.hoverOut(); });
 
     frame.invalidate();
     tip.remeasure();
@@ -481,6 +547,20 @@ function build(host) {
       tip:    tip,
       items:  items,
       /* USER units — the kernel multiplies by frame.scale itself. */
+      /* `hang` is how far past the SVG the tooltip may sit, as a fraction
+         of its own width — and the kernel uses it for the DRAG bounds as
+         well as the resting position. At 0 the drag window collapsed to
+         roughly the width of the tooltip itself, which felt nailed down.
+
+         Desktop has a wide canvas either side of a 520px diagram, so it
+         can be opened right up. A phone has no such room: the same value
+         would let the RESTING tooltip sit most of the way off-screen, so
+         it stays near 0 there.
+
+         Read once, at creation. A resize across the 680px breakpoint
+         re-lays-out the diagram but leaves this value stale — an
+         acceptable trade for not tearing down and rebinding the cycle. */
+      hang:   lay.showAnno ? 0.9 : 0.05,
       geom:   function (d) { return { x: d.x, y: d.y, w: d.w, h: d.h }; },
       onEnter: function (d) { mark(d, true); },
       onExit:  function (d) { mark(d, false); }
