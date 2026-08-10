@@ -693,11 +693,14 @@ EUREKA.boot = function (deps, fn, onFail) {
    anyway. So the popup is a <ul> and the rows are <button>s.
 
    host   element to build into (gets .eureka-select-wrap)
-   opts   { items:[{value,label,divider}], value, placeholder, label,
-            staticLabel, onChange }
+   opts   { items:[{value,label,shortLabel,divider}], value, placeholder,
+            label, staticLabel, onChange }
    staticLabel   button always reads `placeholder` (e.g. "Applications"),
                  rather than swapping to echo the current pick — use for a
                  category filter; leave unset for an ordinary combobox.
+   shortLabel    per-item override read by the closed button instead of
+                 `label` — use when the option needs a fuller description
+                 in the open list than the button has room for.
    returns { value, set, destroy }
 
    Keyboard follows the APG listbox pattern: Enter/Space/Down opens, Up and
@@ -752,7 +755,9 @@ EUREKA.select = function (host, opts) {
   host.appendChild(btn); host.appendChild(list);
 
   function labelFor(v) {
-    for (var i = 0; i < items.length; i++) if (items[i].value === v) return items[i].label;
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].value === v) return items[i].shortLabel || items[i].label;
+    }
     return opts.placeholder || '';
   }
   /* staticLabel: the button reads as a fixed category ("Applications ▾"),
