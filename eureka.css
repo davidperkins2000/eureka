@@ -191,40 +191,102 @@
   font-weight: 500;
 }
 
-/* ── Select — same treatment as a control button ── */
-/* Scoped under .eureka so it outweighs the host site's own form styling —
-   a bare `.eureka-select` loses to anything more specific in the Webflow
-   stylesheet, which is why the control was rendering as a native dropdown.
-   `color-scheme: dark` is what makes the native option list render dark;
-   option elements cannot otherwise be styled reliably. */
+/* ── Select — a listbox, not a <select> ──
+   v0.3.4 scoped the control and set `color-scheme: dark`, which fixed the
+   closed button but could never reach the open menu: a native option list is
+   drawn by the platform, outside the document, so font-family, size,
+   letter-spacing, text-transform, padding and hover colour do not cross that
+   boundary. `color-scheme` only tints the chrome the OS already draws.
+
+   So the popup is ordinary DOM. `.eureka-select` is the button,
+   `.eureka-listbox` the panel — both styled from the same tokens as
+   `.eureka-control`, so a filter and a mode button are visibly one family. */
 .eureka .eureka-select {
-  color-scheme: dark;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 9px 5px 11px; line-height: 1; cursor: pointer;
+  border-radius: 2px;
   font-family: var(--eureka-mono);
   font-size: var(--eureka-l2);
-  line-height: 1;
+  font-weight: var(--eureka-weight);
   letter-spacing: var(--eureka-track-control);
   text-transform: uppercase;
-  font-weight: var(--eureka-weight);
-  padding: 5px 26px 5px 11px;
-  height: auto;
-  min-height: 0;
-  border-radius: 2px;
-  cursor: pointer;
   background: transparent;
   border: 1px solid var(--eureka-btn-line);
   color: var(--eureka-btn-ink);
-  -webkit-appearance: none; appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
-                    linear-gradient(135deg, currentColor 50%, transparent 50%);
-  background-position: right 12px center, right 7px center;
-  background-size: 5px 5px, 5px 5px;
-  background-repeat: no-repeat;
-  transition: border-color var(--eureka-hover), color var(--eureka-hover);
+  transition: border-color var(--eureka-hover), color var(--eureka-hover),
+              background var(--eureka-hover);
 }
 .eureka .eureka-select:hover { border-color: var(--eureka-choro-hi); color: var(--eureka-choro-hi); }
 .eureka .eureka-select:focus-visible { outline: 1px solid var(--eureka-choro-hi); outline-offset: 2px; }
-/* Native option lists cannot be styled reliably; give them a legible dark fill. */
-.eureka .eureka-select option { background: #08111F; color: #f6f3ec; text-transform: none; }
+/* A filter holding a value is active, and reads like an active control. */
+.eureka .eureka-select[data-on] {
+  background: var(--eureka-choro-hi);
+  border-color: var(--eureka-choro-hi);
+  color: var(--eureka-canvas);
+  font-weight: 500;
+}
+/* Caret. Rotates on open so the control states its own direction. */
+.eureka .eureka-caret {
+  width: 0; height: 0; flex: none;
+  border-left: 3.5px solid transparent;
+  border-right: 3.5px solid transparent;
+  border-top: 4px solid currentColor;
+  transition: transform var(--eureka-hover) var(--eureka-ease);
+}
+.eureka .eureka-select[aria-expanded="true"] .eureka-caret { transform: rotate(180deg); }
+
+/* ── Listbox panel ── */
+.eureka-select-wrap { position: relative; display: inline-flex; }
+.eureka .eureka-listbox {
+  position: absolute; top: calc(100% + 5px); left: 0; z-index: 40;
+  min-width: 100%; width: max-content; max-width: 280px;
+  margin: 0; padding: 4px; list-style: none;
+  background: var(--eureka-tip-bg);
+  border: 1px solid var(--eureka-tip-line);
+  border-radius: var(--eureka-radius);
+  box-shadow: 0 8px 24px rgba(0,0,0,.45);
+  /* Closed state animates rather than snapping; `visibility` keeps it out of
+     the a11y tree and off the hit-test between transitions. */
+  opacity: 0; visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity var(--eureka-hover) var(--eureka-ease),
+              transform var(--eureka-hover) var(--eureka-ease),
+              visibility 0s linear var(--eureka-hover);
+}
+.eureka .eureka-listbox[data-open] {
+  opacity: 1; visibility: visible; transform: translateY(0);
+  transition-delay: 0s;
+}
+.eureka .eureka-option {
+  display: block; width: 100%; text-align: left;
+  padding: 6px 10px; border-radius: 2px; cursor: pointer;
+  font-family: var(--eureka-mono);
+  font-size: var(--eureka-l2);
+  line-height: var(--eureka-lh2);
+  font-weight: var(--eureka-weight);
+  letter-spacing: var(--eureka-track);
+  color: var(--eureka-btn-ink);
+  background: transparent; border: 0;
+  transition: background var(--eureka-hover), color var(--eureka-hover);
+}
+/* `data-active` is keyboard focus, `aria-selected` is the held value. They
+   are different states and can sit on different rows at the same time. */
+.eureka .eureka-option:hover,
+.eureka .eureka-option[data-active] {
+  background: rgba(0,184,224,.12);
+  color: var(--eureka-choro-hi);
+}
+.eureka .eureka-option[aria-selected="true"] {
+  color: var(--eureka-choro-hi);
+  font-weight: 500;
+}
+.eureka .eureka-option[aria-selected="true"]::after {
+  content: '\2022'; float: right; margin-left: 12px;
+}
+.eureka .eureka-listbox hr {
+  height: 0; margin: 4px 6px; border: 0;
+  border-top: 1px solid var(--eureka-bar-line-2);
+}
 
 /* ── Legend (discrete key) ── */
 .eureka-legend { display: flex; gap: 18px; align-items: center; margin-left: auto; flex-wrap: wrap; }

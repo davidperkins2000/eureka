@@ -684,6 +684,146 @@ EUREKA.boot = function (deps, fn, onFail) {
   })();
 };
 
+/* ── SELECT ────────────────────────────────────────────────────────────────
+   A listbox built from ordinary DOM, because a native <select> cannot be
+   styled where it matters. The closed control is reachable from CSS; the
+   open option list is drawn by the platform, outside the document, and no
+   amount of specificity puts the chart's typeface, tracking or casing into
+   it. `color-scheme: dark` only tints the chrome the OS was going to draw
+   anyway. So the popup is a <ul> and the rows are <button>s.
+
+   host   element to build into (gets .eureka-select-wrap)
+   opts   { items:[{value,label,divider}], value, placeholder, label, onChange }
+   returns { value, set, destroy }
+
+   Keyboard follows the APG listbox pattern: Enter/Space/Down opens, Up and
+   Down move the active row, Home/End jump, Enter commits, Escape cancels and
+   returns focus to the button. Active row and selected row are tracked
+   separately — arrowing through the list must not commit a value.          */
+EUREKA.select = function (host, opts) {
+  opts = opts || {};
+  var items  = opts.items || [];
+  var value  = opts.value || '';
+  var onPick = opts.onChange || function () {};
+  var open   = false;
+  var active = -1;
+
+  host.classList.add('eureka-select-wrap');
+  host.innerHTML = '';
+
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'eureka-select';
+  btn.setAttribute('aria-haspopup', 'listbox');
+  btn.setAttribute('aria-expanded', 'false');
+  if (opts.label) btn.setAttribute('aria-label', opts.label);
+
+  var txt = document.createElement('span');
+  var car = document.createElement('i');
+  car.className = 'eureka-caret';
+  car.setAttribute('aria-hidden', 'true');
+  btn.appendChild(txt); btn.appendChild(car);
+
+  var list = document.createElement('ul');
+  list.className = 'eureka-listbox';
+  list.setAttribute('role', 'listbox');
+  if (opts.label) list.setAttribute('aria-label', opts.label);
+
+  var rows = [];
+  items.forEach(function (it, i) {
+    var li = document.createElement('li');
+    if (it.divider) { li.appendChild(document.createElement('hr')); list.appendChild(li); return; }
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'eureka-option';
+    b.id = 'eureka-opt-' + (EUREKA.select._n = (EUREKA.select._n || 0) + 1);
+    b.setAttribute('role', 'option');
+    b.setAttribute('aria-selected', String(it.value === value));
+    b.textContent = it.label;
+    b.addEventListener('click', function (e) { e.stopPropagation(); commit(it.value); });
+    b.addEventListener('mousemove', function () { mark(rows.indexOf(b)); });
+    li.appendChild(b); list.appendChild(li); rows.push(b);
+  });
+
+  host.appendChild(btn); host.appendChild(list);
+
+  function labelFor(v) {
+    for (var i = 0; i < items.length; i++) if (items[i].value === v) return items[i].label;
+    return opts.placeholder || '';
+  }
+  function paint() {
+    txt.textContent = labelFor(value) || opts.placeholder || '';
+    if (value) btn.setAttribute('data-on', 'true'); else btn.removeAttribute('data-on');
+    rows.forEach(function (b, i) {
+      b.setAttribute('aria-selected', String(items.filter(function(x){return !x.divider;})[i].value === value));
+    });
+  }
+  function mark(i) {
+    active = i;
+    rows.forEach(function (b, j) {
+      if (j === i) { b.setAttribute('data-active', 'true'); }
+      else b.removeAttribute('data-active');
+    });
+    if (i > -1) list.setAttribute('aria-activedescendant', rows[i].id);
+    else list.removeAttribute('aria-activedescendant');
+  }
+  function show() {
+    if (open) return;
+    open = true;
+    list.setAttribute('data-open', 'true');
+    btn.setAttribute('aria-expanded', 'true');
+    var vals = items.filter(function(x){return !x.divider;});
+    var at = -1;
+    for (var i = 0; i < vals.length; i++) if (vals[i].value === value) at = i;
+    mark(at > -1 ? at : 0);
+    document.addEventListener('pointerdown', outside, true);
+  }
+  function hide(focus) {
+    if (!open) return;
+    open = false;
+    list.removeAttribute('data-open');
+    btn.setAttribute('aria-expanded', 'false');
+    mark(-1);
+    document.removeEventListener('pointerdown', outside, true);
+    if (focus) btn.focus();
+  }
+  function outside(e) { if (!host.contains(e.target)) hide(false); }
+  function commit(v) { value = v; paint(); hide(true); onPick(v); }
+
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    open ? hide(false) : show();
+  });
+
+  host.addEventListener('keydown', function (e) {
+    var k = e.key;
+    if (!open) {
+      if (k === 'ArrowDown' || k === 'Enter' || k === ' ') { e.preventDefault(); show(); }
+      return;
+    }
+    if (k === 'Escape')       { e.preventDefault(); hide(true); }
+    else if (k === 'ArrowDown'){ e.preventDefault(); mark(Math.min(active + 1, rows.length - 1)); }
+    else if (k === 'ArrowUp')  { e.preventDefault(); mark(Math.max(active - 1, 0)); }
+    else if (k === 'Home')     { e.preventDefault(); mark(0); }
+    else if (k === 'End')      { e.preventDefault(); mark(rows.length - 1); }
+    else if (k === 'Enter' || k === ' ') {
+      e.preventDefault();
+      if (active > -1) rows[active].click();
+    } else if (k === 'Tab')    { hide(false); }
+  });
+
+  paint();
+
+  return {
+    value:   function () { return value; },
+    set:     function (v) { value = v; paint(); },
+    destroy: function () {
+      document.removeEventListener('pointerdown', outside, true);
+      host.innerHTML = '';
+    }
+  };
+};
+
 /* Fonts change text metrics, which changes measured tooltip size. Wait for
    them where layout depends on measurement, with a ceiling so a missing
    font never blocks the render. */
