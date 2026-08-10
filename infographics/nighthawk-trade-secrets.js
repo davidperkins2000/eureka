@@ -75,8 +75,10 @@ function build(host) {
     vDecay:.55, aDecay:.030,
     ambient:.018, dragAlpha:.25,
     driftAmp:.095, driftRate:.0050,
-    bounce:.35,          /* wall rebound; 0 = stick, 1 = elastic */
-    rRoot:26, rCat:15, rSec:12,
+    bounce:.55,          /* wall rebound; 0 = stick, 1 = elastic */
+    edgeZone:56, edgePush:.048,  /* pre-emptive steer-away band, so a node
+      curves back into the field instead of ever reaching the wall */
+    rRoot:31, rCat:15, rSec:12,
     collide:11
   };
 
@@ -189,12 +191,15 @@ function build(host) {
   var out   = {};
   root.querySelectorAll('[data-f]').forEach(function (el) { out[el.dataset.f] = el; });
 
-  /* Title-case the id for display; the register keeps them upper. */
+  /* Title-case the id for display; the register keeps them upper. The open
+     list keeps the full "code \u00b7 name" pair, but the closed button only has
+     room for the code \u2014 shortLabel covers that split. */
   var appItems = [{ value:'', label:'All applications' }, { divider:true }];
   APPS.forEach(function (a) {
     appItems.push({
       value: a.id,
-      label: a.id.charAt(0) + a.id.slice(1).toLowerCase() + ' \u00b7 ' + a.name
+      label: a.id.charAt(0) + a.id.slice(1).toLowerCase() + ' \u00b7 ' + a.name,
+      shortLabel: a.id.charAt(0) + a.id.slice(1).toLowerCase()
     });
   });
 
@@ -234,6 +239,26 @@ function build(host) {
       var n=nodes[i], nx=limX(n,n.x), ny=limY(n,n.y);
       if(nx!==n.x){ n.x=nx; n.vx = -n.vx * CFG.bounce; }
       if(ny!==n.y){ n.y=ny; n.vy = -n.vy * CFG.bounce; }
+    }
+  }
+  /* Steer a node off the wall well before it arrives, so the boundary reads
+     as a current rather than a barrier. Without this, clampAll() is the only
+     thing that ever turns a node around — nothing happens until contact, so
+     a node riding the drift toward an edge covers the last stretch at full
+     speed, hits, sheds most of its energy to `bounce`, and is left sitting
+     in the dead zone right at the wall with too little velocity to leave
+     again. Fading in an inward push across the last edgeZone px gives it a
+     curve to follow back into the field instead of a wall to rest against. */
+  function edgeEase(){
+    var z = CFG.edgeZone;
+    for (var i=0;i<nodes.length;i++){
+      var n=nodes[i]; if (n.fx!=null) continue;
+      var r=rOf(n), mx=CFG.pad+r, myB=CFG.pad+r+(n.type==='cat'?CFG.labelDrop:0);
+      var dl=n.x-mx, dr=(W()-mx)-n.x, dt=n.y-mx, db=(H()-myB)-n.y;
+      if (dl<z) n.vx += (1-Math.max(dl,0)/z)*CFG.edgePush;
+      if (dr<z) n.vx -= (1-Math.max(dr,0)/z)*CFG.edgePush;
+      if (dt<z) n.vy += (1-Math.max(dt,0)/z)*CFG.edgePush;
+      if (db<z) n.vy -= (1-Math.max(db,0)/z)*CFG.edgePush;
     }
   }
 
@@ -362,7 +387,7 @@ function build(host) {
 
     /* Halo */
     nodeSel.append('circle')
-      .attr('r', function(n){ return rOf(n)+8; }).attr('fill','none')
+      .attr('r', function(n){ return rOf(n) + (n.type==='root'?12:8); }).attr('fill','none')
       .attr('stroke', strOf)
       .attr('stroke-width', function(n){ return n.type==='root'?1.5:1; })
       .attr('stroke-opacity', function(n){
@@ -378,7 +403,7 @@ function build(host) {
     /* Root — two lines */
     var rg = nodeSel.filter(function(n){ return n.type==='root'; });
     ['PROJECT','NIGHTHAWK'].forEach(function(w,i){
-      rg.append('text').text(w).attr('text-anchor','middle').attr('y', i?6:-4)
+      rg.append('text').text(w).attr('text-anchor','middle').attr('y', i?7:-5)
         .attr('font-family','var(--eureka-mono)').attr('font-size',7)
         .attr('font-weight',500).attr('letter-spacing',1.4)
         .attr('fill','#8FC9F0').attr('pointer-events','none');
@@ -411,6 +436,7 @@ function build(host) {
       .on('mouseleave', function(){ cycle.hoverOut(); });
 
     sim.on('tick', function(){
+      edgeEase();
       clampAll();
       linkSel.attr('x1',function(l){return l.source.x;}).attr('y1',function(l){return l.source.y;})
              .attr('x2',function(l){return l.target.x;}).attr('y2',function(l){return l.target.y;});
@@ -442,8 +468,7 @@ function build(host) {
   EUREKA.select(sel, {
     items: appItems,
     value: app,
-    placeholder: 'Applications',
-    staticLabel: true,
+    placeholder: 'All applications',
     label: 'Filter by application',
     onChange: function (v) { app = v; render(); }
   });
