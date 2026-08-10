@@ -1,6 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════════
      EUREKA · 002 · nighthawk-trade-secrets · v8
-     Requires eureka.js + eureka.css v0.3.7 and D3 v7 in the site head. 10 AUgust 2026
+     Requires eureka.js + eureka.css v0.3.4 and D3 v7 in the site head.
+
      HEAD CODE (Site Settings → Custom Code → Head) — all four lines:
        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.4/eureka.css">
        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
@@ -43,7 +44,7 @@ if (typeof EUREKA === 'undefined' || !EUREKA.boot) {
 }
 
 var CSS   = "/* \u2500\u2500 \u00a73 TOKENS \u00b7 Tier 2 locals \u2500\u2500 */\n.eureka--nighthawk {\n  --nh-root-fill:#06182c; --nh-root-str:#3D8FD8;\n  --nh-cat-fill: #081D36; --nh-cat-str: #00B8E0;\n  --nh-sec-fill: #0B1E30; --nh-sec-str: #2E6E96;\n  --nh-cross:    #0083B5;\n}\n.eureka--nighthawk .eureka-e-ts  { stroke:#0B2D52; stroke-width:1;   stroke-opacity:.7 }\n.eureka--nighthawk .eureka-e-cat { stroke:#003B75; stroke-width:1.4; stroke-opacity:.75 }\n.eureka--nighthawk .eureka-e-x   { stroke:#0083B5; stroke-width:1.1; stroke-opacity:.55; stroke-dasharray:4,4 }";
-var INNER = "<div class=\"eureka-bar\">\n    <div class=\"eureka-row\">\n      <span class=\"eureka-eyebrow\">\n        <span class=\"eureka-dot\" aria-hidden=\"true\"></span>\n        Project Nighthawk &middot; Trade Secrets Network\n      </span>\n      <span class=\"eureka-controls\">\n        <button class=\"eureka-control\" data-on=\"true\" data-m=\"register\">Trade Secrets</button>\n        <button class=\"eureka-control\" data-m=\"taxonomy\">Taxonomy</button>\n        <button class=\"eureka-control\" data-m=\"deps\">Dependencies</button>\n        <select class=\"eureka-select\" data-app aria-label=\"Filter by application\">\n          <option value=\"\">Application</option>\n        </select>\n      </span>\n    </div>\n    <div class=\"eureka-row\">\n      <span class=\"eureka-legend\">\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch\" style=\"background:#3D8FD8\"></i>Program</span>\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch\" style=\"background:#00B8E0\"></i>Taxonomy</span>\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch eureka-swatch--ring\"></i>Trade secret</span>\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch eureka-swatch--dash\"></i>Cross-dependency</span>\n      </span>\n    </div>\n  </div>\n\n  <div class=\"eureka-canvas\">\n    <svg role=\"img\" aria-label=\"Project Nighthawk \u2014 trade secrets network\"\n         aria-describedby=\"nh-desc\"></svg>\n  </div>\n\n  <div class=\"eureka-bar\">\n    <div class=\"eureka-row eureka-row--tight\">\n      <span class=\"eureka-stats\">\n        <span class=\"eureka-stat\">Secrets <b data-f=\"s\">&mdash;</b></span>\n        <span class=\"eureka-stat\">Links <b data-f=\"e\">&mdash;</b></span>\n        <span class=\"eureka-stat eureka-stat--mode\">View <b data-f=\"m\">TRADE SECRETS</b></span>\n      </span>\n      <span class=\"eureka-credit\">Source: supplied</span>\n    </div>\n  </div>\n\n  <div class=\"eureka-sr\">\n    <p id=\"nh-desc\">Force-directed register of 29 trade secrets across six\n      technology categories and four applications, showing cross-dependencies\n      between secrets. Illustrative dataset; entities are fictional.</p>\n  </div>";
+var INNER = "<div class=\"eureka-bar\">\n    <div class=\"eureka-row\">\n      <span class=\"eureka-eyebrow\">\n        <span class=\"eureka-dot\" aria-hidden=\"true\"></span>\n        Project Nighthawk &middot; Trade Secrets Network\n      </span>\n      <span class=\"eureka-controls\">\n        <button class=\"eureka-control\" data-on=\"true\" data-m=\"register\">Trade Secrets</button>\n        <button class=\"eureka-control\" data-m=\"taxonomy\">Taxonomy</button>\n        <button class=\"eureka-control\" data-m=\"deps\">Dependencies</button>\n        <span data-app></span>\n      </span>\n    </div>\n    <div class=\"eureka-row\">\n      <span class=\"eureka-legend\">\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch\" style=\"background:#3D8FD8\"></i>Program</span>\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch\" style=\"background:#00B8E0\"></i>Taxonomy</span>\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch eureka-swatch--ring\"></i>Trade secret</span>\n        <span class=\"eureka-leg\"><i class=\"eureka-swatch eureka-swatch--dash\"></i>Cross-dependency</span>\n      </span>\n    </div>\n  </div>\n\n  <div class=\"eureka-canvas\">\n    <svg role=\"img\" aria-label=\"Project Nighthawk \u2014 trade secrets network\"\n         aria-describedby=\"nh-desc\"></svg>\n  </div>\n\n  <div class=\"eureka-bar\">\n    <div class=\"eureka-row eureka-row--tight\">\n      <span class=\"eureka-stats\">\n        <span class=\"eureka-stat\">Secrets <b data-f=\"s\">&mdash;</b></span>\n        <span class=\"eureka-stat\">Links <b data-f=\"e\">&mdash;</b></span>\n        <span class=\"eureka-stat eureka-stat--mode\">View <b data-f=\"m\">TRADE SECRETS</b></span>\n      </span>\n      <span class=\"eureka-credit\">Source: supplied</span>\n    </div>\n  </div>\n\n  <div class=\"eureka-sr\">\n    <p id=\"nh-desc\">Force-directed register of 29 trade secrets across six\n      technology categories and four applications, showing cross-dependencies\n      between secrets. Illustrative dataset; entities are fictional.</p>\n  </div>";
 var CLASSES = ["eureka", "eureka--nighthawk"];
 
 function injectCSS() {
@@ -188,11 +189,13 @@ function build(host) {
   var out   = {};
   root.querySelectorAll('[data-f]').forEach(function (el) { out[el.dataset.f] = el; });
 
+  /* Title-case the id for display; the register keeps them upper. */
+  var appItems = [{ value:'', label:'All applications' }, { divider:true }];
   APPS.forEach(function (a) {
-    var o = document.createElement('option');
-    o.value = a.id;
-    o.textContent = a.id.charAt(0) + a.id.slice(1).toLowerCase() + ' \u00b7 ' + a.name;
-    sel.appendChild(o);
+    appItems.push({
+      value: a.id,
+      label: a.id.charAt(0) + a.id.slice(1).toLowerCase() + ' \u00b7 ' + a.name
+    });
   });
 
   var frame = EUREKA.frame(pane, svgEl);
@@ -424,7 +427,9 @@ function build(host) {
     cycle.adopt(walk);
   }
 
-  /* Controls */
+  /* Controls. Built here, not at markup time — `app` is declared below the
+     mount point, so constructing the select earlier would see it reset to ''
+     by its own initialiser a few lines later. */
   root.querySelectorAll('.eureka-control').forEach(function (btn) {
     btn.addEventListener('click', function () {
       root.querySelectorAll('.eureka-control').forEach(function(b){ b.removeAttribute('data-on'); });
@@ -433,7 +438,14 @@ function build(host) {
       render();
     });
   });
-  sel.addEventListener('change', function () { app = sel.value; render(); });
+
+  EUREKA.select(sel, {
+    items: appItems,
+    value: app,
+    placeholder: 'Application',
+    label: 'Filter by application',
+    onChange: function (v) { app = v; render(); }
+  });
 
   render();
   cycle.bind(pane).start();
