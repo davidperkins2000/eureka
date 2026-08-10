@@ -1,7 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════════
      EUREKA · 002 · nighthawk-trade-secrets · v8
-     Requires eureka.js + eureka.css v0.3.4 and D3 v7 in the site head.
-
+     Requires eureka.js + eureka.css v0.3.7 and D3 v7 in the site head. 10 AUgust 2026
      HEAD CODE (Site Settings → Custom Code → Head) — all four lines:
        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.4/eureka.css">
        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
