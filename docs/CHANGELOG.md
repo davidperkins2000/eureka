@@ -1,5 +1,36 @@
 # Changelog
 
+## v0.3.8 — 10 August 2026
+
+Fixes a deploy mistake from v0.3.7's select rebuild — no engine or chrome
+changes of its own.
+
+**Nighthawk shipped the old select under the new select's CSS.** v0.3.7
+replaced the native `<select>` with a proper listbox (see below), but the
+updated chart module was uploaded to the repo root instead of
+`infographics/`, which is the path the README, manifest and every Webflow
+embed actually reference. The shipped file kept the native `<select
+class="eureka-select">`, which then inherited the new button/listbox
+styling (flex layout, no `appearance` reset, no `color-scheme: dark`) and
+rendered oversized and misaligned next to the mode buttons. The correct
+module now lives only at `infographics/nighthawk-trade-secrets.js`; the
+stray root-level copy is removed.
+
+Re-rendered the flowchart and both infographics headlessly against the
+real `eureka.css`/`eureka.js` — all three clean, no console errors.
+
+### v0.3.7 — carried in, previously untagged
+
+**Select rebuilt as a custom listbox.** A native `<option>` list is drawn
+by the platform outside the document, so `color-scheme: dark` was the only
+thing v0.3.4's scoped `.eureka-select` rule could actually reach — font,
+tracking, casing, padding and hover colour never crossed into the open
+menu. `EUREKA.select(host, opts)` in `eureka.js` now builds the popup from
+ordinary DOM (`<button>` + `<ul role="listbox">`), following the APG
+listbox keyboard pattern. `.eureka-select` is the closed button,
+`.eureka-listbox` / `.eureka-option` the panel — both on the same tokens
+as `.eureka-control`, so a filter and a mode button read as one family.
+
 ## v0.3.4 — 4 August 2026
 
 Supersedes the v0.3.2 and v0.3.3 packages, which were produced but never

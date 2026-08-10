@@ -1,8 +1,8 @@
 {
   "schema": 2,
-  "libraryVersion": "0.3.4",
-  "updated": "2026-08-04",
-  "cdn": "https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.4/",
+  "libraryVersion": "0.3.8",
+  "updated": "2026-08-10",
+  "cdn": "https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.8/",
   "note": "Charts are self-mounting modules. One repo tag versions everything; the Webflow embed carries the tag.",
   "artefacts": [
     {
@@ -14,7 +14,7 @@
       "module": "infographics/wipo-gii-2025.js",
       "deps": ["d3", "topojson"],
       "webflowPage": "691d6a0020e40a0e28d8e438",
-      "renderTested": false
+      "renderTested": true
     },
     {
       "slug": "nighthawk",
@@ -26,7 +26,7 @@
       "data": "data/nighthawk.json",
       "deps": ["d3"],
       "webflowPage": "691d6a0020e40a0e28d8e438",
-      "renderTested": false
+      "renderTested": true
     },
     {
       "slug": "au-patent-process",
