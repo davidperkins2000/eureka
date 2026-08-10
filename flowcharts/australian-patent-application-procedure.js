@@ -1,15 +1,15 @@
 /* ═══════════════════════════════════════════════════════════════════════
      EUREKA · flowcharts · australian-patent-application-procedure · v1
-     Requires eureka.js + eureka.css v0.3.9 and D3 v7 in the site head.
+     Requires eureka.js + eureka.css v0.3.10 and D3 v7 in the site head.
 
      HEAD CODE (Site Settings → Custom Code → Head):
-       <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.9/eureka.css">
+       <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.10/eureka.css">
        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
-       <script src="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.9/eureka.js"></script>
+       <script src="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.10/eureka.js"></script>
 
      CODE EMBED, per page — two lines:
        <div data-eureka="australian-patent-application-procedure"></div>
-       <script src="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.9/flowcharts/australian-patent-application-procedure.js"></script>
+       <script src="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.10/flowcharts/australian-patent-application-procedure.js"></script>
 
      ─── WHAT THIS FILE OWNS ───────────────────────────────────────────
      The SPEC, and the layout that turns it into geometry. Nothing else.

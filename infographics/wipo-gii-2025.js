@@ -1,13 +1,13 @@
 /* ═══════════════════════════════════════════════════════════════════════
      EUREKA · 001 · wipo-gii-2025 · v12
      Innovation Geography — WIPO GII 2025 choropleth.
-     Requires eureka.js + eureka.css v0.3.9, D3 v7 and TopoJSON in the head.
+     Requires eureka.js + eureka.css v0.3.10, D3 v7 and TopoJSON in the head.
 
      HEAD CODE (Site Settings → Custom Code → Head) — all four lines:
-       <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.9/eureka.css">
+       <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.10/eureka.css">
        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
-       <script src="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.9/eureka.js"></script>
+       <script src="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.10/eureka.js"></script>
      The jsDelivr tag is pinned and immutable — bump it to release, never
      point at a branch.
 

@@ -1,12 +1,12 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   eureka.js — v0.3.9 · 10 August 2026
+   eureka.js — v0.3.10 · 10 August 2026
    Core engine: frame · tip · cycle
 
    Extracted from the AU Patent Process flowchart, which is the most complete
    of the three implementations. Adds Nighthawk's container-level pointer
    interrupt and GII's dependency guard.
 
-   Companion: eureka.css v0.3.9 — keep the versions in step.
+   Companion: eureka.css v0.3.10 — keep the versions in step.
 
    ─── PARAMETERS ────────────────────────────────────────────────────────────
    dwell 3000 (sparse) · dense 2000 · fade 500 · step 250 · start 3000 · resume 1500 · settle 250
@@ -18,7 +18,7 @@
 'use strict';
 
 var EUREKA = global.EUREKA = global.EUREKA || {};
-EUREKA.version = '0.3.9';
+EUREKA.version = '0.3.10';
 
 EUREKA.reduced = (
   typeof global.matchMedia === 'function' &&

@@ -1,5 +1,42 @@
 # Changelog
 
+## v0.3.10 — 10 August 2026
+
+Four more fixes, all reported against Nighthawk; one is engine-level so
+every chart using `EUREKA.select` inherits it.
+
+**Force graph drifted to the wall and stopped.** `clampAll()` was the only
+thing that ever turned a node around, and it only acts on contact — so a
+node riding the ambient drift toward an edge covered the last stretch at
+full speed, shed most of its velocity to `bounce` on impact, and was left
+without enough left to leave again. Added `edgeEase()`: a pre-emptive
+inward push that fades in over the last `edgeZone` (56px) before a wall,
+so a node curves back into the field instead of ever reaching it. `bounce`
+also raised 0.35 → 0.55 so any contact that still happens stays lively.
+Verified headlessly: after a 10s settle, 0 of 36 nodes sat within 20px of
+the canvas edge, and 35/36 kept moving over the following 5s.
+
+**Root node read as too small, text crowding the edge.** Radius 26 → 31,
+halo widened to match (root now +12px, other types unchanged at +8px),
+and the two-line "PROJECT / NIGHTHAWK" label given a touch more line
+spacing to sit inside the larger circle with room to breathe.
+
+**Application filter always read "APPLICATIONS," selection or not.**
+v0.3.9 added `staticLabel: true` specifically so the button wouldn't echo
+the pick — turns out that was the wrong call for a filter with only five
+options, where seeing the current selection at a glance matters more than
+a fixed category label. Reversed: `EUREKA.select` gains a per-item
+`shortLabel`, read by the closed button in place of the full option text;
+the open list keeps the fuller "code · name" pair. Nighthawk's filter now
+reads "ALL APPLICATIONS" by default and the picked application's code once
+one is chosen.
+
+**Legend row was restating what the interface already shows.** Node
+colour and link style read directly from the graph, and the mode buttons
+and tooltips already spell out what's what — the swatch legend row under
+the eyebrow added a line of chrome without adding information. Removed;
+the canvas picks up the freed height.
+
 ## v0.3.9 — 10 August 2026
 
 Four fixes to the v0.3.7 select widget, reported against Nighthawk's
