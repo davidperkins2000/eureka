@@ -1,5 +1,55 @@
 # Changelog
 
+## v0.3.9 — 10 August 2026
+
+Four fixes to the v0.3.7 select widget, reported against Nighthawk's
+application filter. All four are engine/chrome fixes in `eureka.js` /
+`eureka.css`, so every chart that adopts `EUREKA.select` gets them for
+free — not just Nighthawk.
+
+**Menu title changed on selection.** The button was echoing the current
+pick ("Hawkeye · Contested Airspace") instead of staying a fixed category
+label. Added `EUREKA.select(host, { staticLabel: true })`: the button
+always reads `placeholder` ("Applications"), the same way the mode
+buttons never rename themselves. Nighthawk now passes `staticLabel: true,
+placeholder: 'Applications'`.
+
+**Options rendered in Capital Case.** `.eureka-option` never got
+`text-transform: uppercase` — every other label class in the system
+(`.eureka-control`, `.eureka-eyebrow`, `.eureka-select` itself) has it,
+this one was missed when the listbox was built. Added.
+
+**Couldn't select past the first option; menu painted behind the
+canvas.** `.eureka-bar` sets `backdrop-filter: blur(12px)` for the glass
+chrome look, which forces it to form its own stacking context — and once
+that happens, no z-index on a descendant (the listbox, z-index:40) can
+paint above a *later* stacking-context sibling, which `.eureka-canvas`
+is. The whole bar, dropdown included, was trapped under the canvas; only
+the sliver poking out past the canvas's edge was ever clickable, which
+looked like "can't select past the first option." Fixed by giving
+`.eureka-bar` an explicit `z-index: 1` — flex items honour z-index even
+without `position`, so this lifts the bar's entire context above canvas's
+z-index:auto. `.eureka-listbox` also bumped 40 → 60 for headroom above
+`.eureka-loader` (50).
+
+**Menu and tooltips were too opaque.** `--eureka-tip-bg` was
+`rgba(8,17,31,.96)` — close to solid. The AU patent flowchart's tooltip
+uses the site's "lift 64% opacity" background token, which reads
+noticeably more like it's floating over the canvas. Lowered the shared
+default to `rgba(8,17,31,.64)` in `:root`, and added a matching
+`backdrop-filter: blur(6px)` to `.eureka-listbox` (the tooltip already
+had one) so text stays legible over busy canvas content at the lower
+opacity. Because `--eureka-tip-bg` already drove both `.eureka-tip` and
+`.eureka-listbox` backgrounds, this one token change reaches Nighthawk's
+tooltip *and* menu, and GII's tooltip, in one place — nothing chart-local
+to touch.
+
+Re-verified headlessly against the real files: clicked through to a
+non-first option and confirmed the underlying filter actually applied
+(node count changed), confirmed computed `text-transform: uppercase` on
+options, confirmed the static button label, and screenshotted GII's
+tooltip to confirm the shared opacity change reads correctly there too.
+
 ## v0.3.8 — 10 August 2026
 
 Fixes a deploy mistake from v0.3.7's select rebuild — no engine or chrome

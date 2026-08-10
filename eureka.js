@@ -1,12 +1,12 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   eureka.js — v0.3.8 · 10 August 2026
+   eureka.js — v0.3.9 · 10 August 2026
    Core engine: frame · tip · cycle
 
    Extracted from the AU Patent Process flowchart, which is the most complete
    of the three implementations. Adds Nighthawk's container-level pointer
    interrupt and GII's dependency guard.
 
-   Companion: eureka.css v0.3.8 — keep the versions in step.
+   Companion: eureka.css v0.3.9 — keep the versions in step.
 
    ─── PARAMETERS ────────────────────────────────────────────────────────────
    dwell 3000 (sparse) · dense 2000 · fade 500 · step 250 · start 3000 · resume 1500 · settle 250
@@ -18,7 +18,7 @@
 'use strict';
 
 var EUREKA = global.EUREKA = global.EUREKA || {};
-EUREKA.version = '0.3.8';
+EUREKA.version = '0.3.9';
 
 EUREKA.reduced = (
   typeof global.matchMedia === 'function' &&
@@ -693,7 +693,11 @@ EUREKA.boot = function (deps, fn, onFail) {
    anyway. So the popup is a <ul> and the rows are <button>s.
 
    host   element to build into (gets .eureka-select-wrap)
-   opts   { items:[{value,label,divider}], value, placeholder, label, onChange }
+   opts   { items:[{value,label,divider}], value, placeholder, label,
+            staticLabel, onChange }
+   staticLabel   button always reads `placeholder` (e.g. "Applications"),
+                 rather than swapping to echo the current pick — use for a
+                 category filter; leave unset for an ordinary combobox.
    returns { value, set, destroy }
 
    Keyboard follows the APG listbox pattern: Enter/Space/Down opens, Up and
@@ -751,8 +755,14 @@ EUREKA.select = function (host, opts) {
     for (var i = 0; i < items.length; i++) if (items[i].value === v) return items[i].label;
     return opts.placeholder || '';
   }
+  /* staticLabel: the button reads as a fixed category ("Applications ▾"),
+     never swapping to echo the current pick — same pattern as the mode
+     buttons, which don't rename themselves either. The held value still
+     shows via `data-on` and the option list's own selected mark. */
   function paint() {
-    txt.textContent = labelFor(value) || opts.placeholder || '';
+    txt.textContent = opts.staticLabel
+      ? (opts.placeholder || '')
+      : (labelFor(value) || opts.placeholder || '');
     if (value) btn.setAttribute('data-on', 'true'); else btn.removeAttribute('data-on');
     rows.forEach(function (b, i) {
       b.setAttribute('aria-selected', String(items.filter(function(x){return !x.divider;})[i].value === value));

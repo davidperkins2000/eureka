@@ -1,12 +1,12 @@
 /* ═══════════════════════════════════════════════════════════════════════
      EUREKA · 002 · nighthawk-trade-secrets · v8
-     Requires eureka.js + eureka.css v0.3.8 and D3 v7 in the site head.
+     Requires eureka.js + eureka.css v0.3.9 and D3 v7 in the site head.
 
      HEAD CODE (Site Settings → Custom Code → Head) — all four lines:
-       <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.8/eureka.css">
+       <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.9/eureka.css">
        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
-       <script src="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.8/eureka.js"></script>
+       <script src="https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.9/eureka.js"></script>
      The jsDelivr tag is pinned and immutable — bump it to release, never
      point at a branch.
 
@@ -442,7 +442,8 @@ function build(host) {
   EUREKA.select(sel, {
     items: appItems,
     value: app,
-    placeholder: 'Application',
+    placeholder: 'Applications',
+    staticLabel: true,
     label: 'Filter by application',
     onChange: function (v) { app = v; render(); }
   });

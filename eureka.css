@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   eureka.css — v0.3.8 · 10 August 2026
-   Tier 1 shared chrome. Companion to eureka.js v0.3.8 — keep versions in step.
+   eureka.css — v0.3.9 · 10 August 2026
+   Tier 1 shared chrome. Companion to eureka.js v0.3.9 — keep versions in step.
 
    Bluescale throughout. Top bar, bottom bar and status strip share one
    treatment; the canvas between them is Graph/Ocean, so the bars read a
@@ -31,7 +31,7 @@
   --eureka-leg-ink:    rgba(0,184,224,.72);
   --eureka-stat-ink:   rgba(0,184,224,.55);
 
-  --eureka-tip-bg:     rgba(8,17,31,.96);
+  --eureka-tip-bg:     rgba(8,17,31,.64);
   --eureka-tip-line:   rgba(0,184,224,.24);
 
   /* ── Type ── */
@@ -112,6 +112,14 @@
   background: var(--eureka-bar-bg);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--eureka-bar-line);
+  /* `backdrop-filter` forces this flex item to form its own stacking
+     context, which traps any z-index set on a descendant (the select
+     listbox) inside it — no z-index value in there can paint above a
+     LATER flex sibling such as .eureka-canvas, which stays z-index:auto.
+     An explicit positive z-index here lifts the bar's whole context above
+     canvas's, so the listbox's own z-index then means something. */
+  position: relative;
+  z-index: 1;
 }
 /* Any bar AFTER the canvas is a bottom bar. Do not use :last-of-type here —
    it matches on element type, not class, and every child of .eureka is a div,
@@ -238,10 +246,11 @@
 /* ── Listbox panel ── */
 .eureka-select-wrap { position: relative; display: inline-flex; }
 .eureka .eureka-listbox {
-  position: absolute; top: calc(100% + 5px); left: 0; z-index: 40;
+  position: absolute; top: calc(100% + 5px); left: 0; z-index: 60;
   min-width: 100%; width: max-content; max-width: 280px;
   margin: 0; padding: 4px; list-style: none;
   background: var(--eureka-tip-bg);
+  backdrop-filter: blur(6px);
   border: 1px solid var(--eureka-tip-line);
   border-radius: var(--eureka-radius);
   box-shadow: 0 8px 24px rgba(0,0,0,.45);
@@ -265,6 +274,7 @@
   line-height: var(--eureka-lh2);
   font-weight: var(--eureka-weight);
   letter-spacing: var(--eureka-track);
+  text-transform: uppercase;
   color: var(--eureka-btn-ink);
   background: transparent; border: 0;
   transition: background var(--eureka-hover), color var(--eureka-hover);
