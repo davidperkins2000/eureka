@@ -1,8 +1,8 @@
 {
   "schema": 2,
-  "libraryVersion": "0.3.9",
+  "libraryVersion": "0.3.10",
   "updated": "2026-08-10",
-  "cdn": "https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.9/",
+  "cdn": "https://cdn.jsdelivr.net/gh/davidperkins2000/eureka@v0.3.10/",
   "note": "Charts are self-mounting modules. One repo tag versions everything; the Webflow embed carries the tag.",
   "artefacts": [
     {
