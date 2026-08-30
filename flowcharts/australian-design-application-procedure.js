@@ -58,16 +58,17 @@ if (typeof EUREKA === 'undefined' || !EUREKA.boot) {
 
 var SPEC = [
 'Australian Registered Design Application | | D0001',
-'  ? Filed with representations of the design. Newness and distinctiveness are judged against the prior art base at the filing date.',
+'  >> Design Registered and Certificate Issued @right',
+'  ? Filed with representations and optional statement of newness and distinctiveness.',
 'Request Certification of Design Application | | D0003',
-'  ? Certification is what makes a registered design enforceable. It may be requested by the owner or by a third party.',
+'  ? Certification is optional at filing but required later if design is to be enforced. Certification may be requested by the owner or by a third party.',
 'Examination Report | | D0191',
-'  ? Examination tests the design against the prior art base and raises any grounds of revocation.',
+'  ? Examination assesses the design against prior art base.',
 'Respond to Report with Amendments or Arguments | | D0192',
 '  << Examination Report @left',
-'  ? Responds by amendment or argument. The examination cycle repeats until the grounds are resolved.',
+'  ? Respond by amendment or argument.',
 'Design Registered and Certificate Issued',
-'  ? A certificate of examination issues once no ground of revocation remains.',
+'  ? Certificate of examination issues once any ground of revocation are resolved.',
 'Design Renewal Due at Fifth Anniversary | | D0005',
 '  ? Renewal at five years extends the term to a maximum of ten years from filing.'
 ].join('\n');
