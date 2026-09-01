@@ -57,6 +57,8 @@ if (typeof EUREKA === 'undefined' || !EUREKA.boot) {
 /* ═══ §1 SPEC ═══════════════════════════════════════════════════════ */
 
 var SPEC = [
+'Priority Design Application',
+'  ? Starts Convention Priority Period of 6 months.',
 'Australian Registered Design Application | | D0001',
 '  >> Design Registered and Certificate Issued @right',
 '  ? Filed with representations and optional statement of newness and distinctiveness.',
