@@ -48,13 +48,13 @@ if (typeof EUREKA === 'undefined' || !EUREKA.boot) {
 /* ═══ §1 SPEC ═══════════════════════════════════════════════════════ */
 
 var SPEC = [
-'Priority Trade Mark Application',
+'Priority Trade Mark Application | 0 months',
 '  ? Starts Convention Priority Period of 6 months.',
 'Pre-filing Search | | T0110',
 '  ? Clearance search for conflicting marks. Exact search recommended.',
-'Australian Registered Trade Mark Application Filed | | T0001',
+'Australian Registered Trade Mark Application Filed | 6 months | T0001',
 '  ? Sets the applicant and the classes of goods and services.',
-'Examination Report | | T0191',
+'Examination Report | 9\u201310 months| T0191',
 '  ? Raises any grounds of rejection\u2014most often distinctiveness or a conflicting earlier registration.',
 'Respond to Report with Amendments or Arguments | | T0192',
 '  ? Fifteen months from the first report to gain acceptance, extendable three months on request.',
