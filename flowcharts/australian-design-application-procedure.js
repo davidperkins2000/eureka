@@ -73,7 +73,7 @@ var SPEC = [
 '  ? Certificate of examination issues once any grounds of revocation are resolved.',
 'Design Renewal Due at Fifth Anniversary | | D0005',
 '  ? Renewal at five years extends the term to a maximum of ten years from filing.',
-' Design registration expires\u2014Maximum Term 10 YEARS.',
+' Design registration expires \u2014 Maximum Term 10 YEARS.',
 '  ? Maximum Term of 10 Years runs from Filing date.'
 ].join('\n');
 
