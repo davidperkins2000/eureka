@@ -70,11 +70,11 @@ var SPEC = [
 '  ? Acceptance is advertised, opening a three-month opposition to grant period.',
 'Excess Claims Fees (if applicable) | | P0213(b)',
 '  ? Payable again on acceptance where claims exceed 20 claims.',
-'Patent Granted \u2014 Certificate Issued',
+'Patent Granted\u2014Certificate Issued',
 '  ? Granted once the opposition period passes.',
 'Continuation / Renewal Fees Due Fourth Year | | P0211',
 '  ? Renewal fees fall due annually from the fourth to nineteenth anniversary of filing.',
-'Patent Term Expires \u2014 Maximum 20 Years',
+'Patent Term Expires\u2014Maximum 20 Years',
 '  ? Standard patents run twenty years from the filing date.'
 ].join('\n');
 
