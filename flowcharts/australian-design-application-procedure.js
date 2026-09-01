@@ -58,8 +58,8 @@ if (typeof EUREKA === 'undefined' || !EUREKA.boot) {
 
 var SPEC = [
 'Priority Design Application',
-'  ? Starts Convention Priority Period of 6 months.',
-'Australian Registered Design Application | | D0001',
+'  ? Starts Convention Priority Period of 6 months. | 0 months',
+'Australian Registered Design Application | 6 months | D0001',
 '  >> Design Registered and Certificate Issued @right',
 '  ? Filed with representations and optional statement of newness and distinctiveness.',
 'Request Certification of Design Application | | D0003',
@@ -72,7 +72,9 @@ var SPEC = [
 'Design Registered and Certificate Issued',
 '  ? Certificate of examination issues once any ground of revocation are resolved.',
 'Design Renewal Due at Fifth Anniversary | | D0005',
-'  ? Renewal at five years extends the term to a maximum of ten years from filing.'
+'  ? Renewal at five years extends the term to a maximum of ten years from filing.',
+' Design registration expires. Maximum Term 10 YEARS.',
+'  ? Maximum Term of 10 Years runs from Filing date.'
 ].join('\n');
 
 /* Layout physics only. Cycle timing lives in EUREKA.defaults. */
